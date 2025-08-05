@@ -11,7 +11,6 @@ abstract class BusinessException : BaseException {
     constructor(errorCode: ErrorCode, cause: Throwable) : super(errorCode, cause)
     constructor(errorCode: ErrorCode, customMessage: String, cause: Throwable) : super(errorCode, customMessage, cause)
 
+    // 비즈니스 예외는 일반적으로 WARN 레벨
     override fun getLogLevel(): LogLevel = LogLevel.WARN
-    open fun isRetryable(): Boolean = false
-    open fun getUserFriendlyMessage(): String = message ?: errorCode.message
 }
