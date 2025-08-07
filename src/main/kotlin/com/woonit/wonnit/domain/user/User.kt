@@ -16,7 +16,7 @@ class User(
     @NaturalId
     val phoneNumber: PhoneNumber,
 
-    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     val registeredSpaces: MutableList<Space> = mutableListOf(),
 
     @Id
