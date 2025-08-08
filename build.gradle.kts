@@ -45,6 +45,8 @@ dependencies {
     runtimeOnly("com.h2database:h2")
     runtimeOnly("com.mysql:mysql-connector-j")
 
+    implementation("com.github.f4b6a3:ulid-creator:5.2.0")
+
     implementation("org.springframework.boot:spring-boot-starter-webflux")
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
