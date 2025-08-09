@@ -2,6 +2,7 @@ package com.woonit.wonnit.domain.space.service
 
 import com.woonit.wonnit.domain.space.dto.MySpaceResponse
 import com.woonit.wonnit.domain.space.dto.RecentSpaceResponse
+import com.woonit.wonnit.domain.space.dto.SpaceSearchResponse
 import com.woonit.wonnit.domain.space.repository.SpaceQueryRepository
 import org.springframework.stereotype.Service
 
@@ -17,5 +18,10 @@ class SpaceQueryService(
     fun getRecentSpaces(): List<RecentSpaceResponse> {
         return spaceQueryRepository.findRecentSpaces()
             .map { space -> RecentSpaceResponse.from(space) }
+    }
+
+    fun getNearBySpaces(lat: Double, lon: Double): List<SpaceSearchResponse> {
+        return spaceQueryRepository.findNearBySpaces(lat, lon)
+            .map { space -> SpaceSearchResponse.from(space) }
     }
 }
