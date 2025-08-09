@@ -1,7 +1,7 @@
 package com.woonit.wonnit.global.exception.business
 
-import com.woonit.wonnit.global.exception.code.ErrorCode
 import com.woonit.wonnit.global.exception.base.BaseException
+import com.woonit.wonnit.global.exception.code.ErrorCode
 import com.woonit.wonnit.global.exception.log.LogLevel
 
 abstract class BusinessException : BaseException {

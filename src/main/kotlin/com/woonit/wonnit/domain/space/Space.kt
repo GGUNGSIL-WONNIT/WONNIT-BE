@@ -4,6 +4,7 @@ import com.woonit.wonnit.domain.share.AddressInfo
 import com.woonit.wonnit.domain.share.AmountInfo
 import com.woonit.wonnit.domain.share.OperationalInfo
 import com.woonit.wonnit.domain.share.PhoneNumber
+import com.woonit.wonnit.domain.user.User
 import com.woonit.wonnit.global.entity.BaseEntity
 import jakarta.persistence.*
 
@@ -35,16 +36,25 @@ class Space(
 
     val spaceModelUrl: String?,
 
+    @Embedded
+    @AttributeOverride(
+        name = "value",
+        column = Column(name = "phone_number", nullable = false)
+    )
     val phoneNumber: PhoneNumber,
 
     @Column(columnDefinition = "TEXT")
     val precautions: String?,
 
-    val tags: MutableList<String> = mutableListOf()
+    val tags: MutableList<String> = mutableListOf(),
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    val user: User
 ) : BaseEntity() {
 
     init {
-        require(subImgUrls.isEmpty()) { "추가 사진은 비어있을 수 없습니다" }
+        require(subImgUrls.isNotEmpty()) { "추가 사진은 비어있을 수 없습니다" }
     }
 
     companion object {

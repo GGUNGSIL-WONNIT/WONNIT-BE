@@ -1,11 +1,9 @@
 package com.woonit.wonnit.domain.share
 
-import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
 
 @Embeddable
 data class PhoneNumber(
-    @Column(unique = true, name = "phone_number")
     val value: String,
 ) {
     init {
