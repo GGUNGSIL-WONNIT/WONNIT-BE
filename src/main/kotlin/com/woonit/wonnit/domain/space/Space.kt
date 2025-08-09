@@ -35,6 +35,11 @@ class Space(
 
     val spaceModelUrl: String?,
 
+    @Embedded
+    @AttributeOverride(
+        name = "value",
+        column = Column(name = "phone_number", nullable = false)
+    )
     val phoneNumber: PhoneNumber,
 
     @Column(columnDefinition = "TEXT")
@@ -44,7 +49,7 @@ class Space(
 ) : BaseEntity() {
 
     init {
-        require(subImgUrls.isEmpty()) { "추가 사진은 비어있을 수 없습니다" }
+        require(subImgUrls.isNotEmpty()) { "추가 사진은 비어있을 수 없습니다" }
     }
 
     companion object {
