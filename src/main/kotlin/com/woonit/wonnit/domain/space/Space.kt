@@ -4,6 +4,7 @@ import com.woonit.wonnit.domain.share.AddressInfo
 import com.woonit.wonnit.domain.share.AmountInfo
 import com.woonit.wonnit.domain.share.OperationalInfo
 import com.woonit.wonnit.domain.share.PhoneNumber
+import com.woonit.wonnit.global.entity.BaseEntity
 import jakarta.persistence.*
 
 @Entity
@@ -39,12 +40,8 @@ class Space(
     @Column(columnDefinition = "TEXT")
     val precautions: String?,
 
-    val tags: MutableList<String> = mutableListOf(),
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: String? = null
-) {
+    val tags: MutableList<String> = mutableListOf()
+) : BaseEntity() {
 
     init {
         require(subImgUrls.isEmpty()) { "추가 사진은 비어있을 수 없습니다" }
