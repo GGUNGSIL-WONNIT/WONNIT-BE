@@ -1,5 +1,6 @@
 package com.woonit.wonnit.domain.space.service
 
+import com.woonit.wonnit.domain.space.dto.MySpaceResponse
 import com.woonit.wonnit.domain.space.dto.RecentSpaceResponse
 import com.woonit.wonnit.domain.space.repository.SpaceQueryRepository
 import org.springframework.stereotype.Service
@@ -8,10 +9,13 @@ import org.springframework.stereotype.Service
 class SpaceQueryService(
     val spaceQueryRepository: SpaceQueryRepository,
 ) {
+    fun getMySpaces(userId: String, page: Int): List<MySpaceResponse> {
+        return spaceQueryRepository.findMySpaces(userId, page)
+            .map { space -> MySpaceResponse.from(space) }
+    }
 
     fun getRecentSpaces(): List<RecentSpaceResponse> {
         return spaceQueryRepository.findRecentSpaces()
             .map { space -> RecentSpaceResponse.from(space) }
     }
-
 }
