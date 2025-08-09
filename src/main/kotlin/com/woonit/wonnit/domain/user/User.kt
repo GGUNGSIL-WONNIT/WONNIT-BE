@@ -22,7 +22,7 @@ class User(
     )
     val phoneNumber: PhoneNumber,
 
-    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
     val registeredSpaces: MutableList<Space> = mutableListOf()
 ) : BaseEntity() {
 

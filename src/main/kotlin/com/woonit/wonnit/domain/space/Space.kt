@@ -4,6 +4,7 @@ import com.woonit.wonnit.domain.share.AddressInfo
 import com.woonit.wonnit.domain.share.AmountInfo
 import com.woonit.wonnit.domain.share.OperationalInfo
 import com.woonit.wonnit.domain.share.PhoneNumber
+import com.woonit.wonnit.domain.user.User
 import com.woonit.wonnit.global.entity.BaseEntity
 import jakarta.persistence.*
 
@@ -45,7 +46,11 @@ class Space(
     @Column(columnDefinition = "TEXT")
     val precautions: String?,
 
-    val tags: MutableList<String> = mutableListOf()
+    val tags: MutableList<String> = mutableListOf(),
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    val user: User
 ) : BaseEntity() {
 
     init {
