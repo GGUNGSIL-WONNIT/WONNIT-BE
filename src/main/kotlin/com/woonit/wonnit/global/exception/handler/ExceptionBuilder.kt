@@ -1,7 +1,7 @@
 package com.woonit.wonnit.global.exception.handler
 
-import com.woonit.wonnit.global.exception.code.ErrorCode
 import com.woonit.wonnit.global.exception.base.BaseException
+import com.woonit.wonnit.global.exception.code.ErrorCode
 
 class ExceptionBuilder(private val errorCode: ErrorCode) {
     private var customMessage: String? = null

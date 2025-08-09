@@ -1,16 +1,13 @@
 package com.woonit.wonnit.global.entity
 
 import com.github.f4b6a3.ulid.UlidCreator
-import jakarta.persistence.Column
-import jakarta.persistence.Id
-import jakarta.persistence.MappedSuperclass
-import jakarta.persistence.PostLoad
-import jakarta.persistence.PostPersist
+import jakarta.persistence.*
 import org.hibernate.proxy.HibernateProxy
 import org.springframework.data.domain.Persistable
 import java.io.Serializable
-import java.util.Objects
-import java.util.UUID
+import java.util.*
+import kotlin.jvm.Transient
+import kotlin.jvm.javaClass
 
 @MappedSuperclass
 abstract class PrimaryKeyEntity : Persistable<UUID> {

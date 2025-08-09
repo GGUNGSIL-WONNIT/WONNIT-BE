@@ -1,8 +1,8 @@
 package com.woonit.wonnit.global.exception.handler
 
-import com.woonit.wonnit.global.exception.code.ErrorCode
 import com.woonit.wonnit.global.exception.base.BaseException
 import com.woonit.wonnit.global.exception.business.*
+import com.woonit.wonnit.global.exception.code.ErrorCode
 import com.woonit.wonnit.global.exception.server.BadGatewayException
 import com.woonit.wonnit.global.exception.server.GatewayTimeoutException
 import com.woonit.wonnit.global.exception.server.InternalServerException

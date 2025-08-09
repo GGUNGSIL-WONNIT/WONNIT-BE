@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.woonit.wonnit.domain.space.SpaceCategory
 import org.assertj.core.api.AssertionsForClassTypes
-import org.assertj.core.api.AssertionsForInterfaceTypes
+import org.assertj.core.api.AssertionsForInterfaceTypes.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -23,7 +23,7 @@ class CategoryControllerTest(
         val result = mvcTester.get().uri("/api/v1/categories")
             .exchange()
 
-        AssertionsForInterfaceTypes.assertThat(result).hasStatusOk()
+        assertThat(result).hasStatusOk()
 
         val response: MutableList<SpaceCategory> = objectMapper.readValue(result.response.contentAsString)
 
