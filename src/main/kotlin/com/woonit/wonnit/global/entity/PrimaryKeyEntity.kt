@@ -7,7 +7,6 @@ import org.springframework.data.domain.Persistable
 import java.io.Serializable
 import java.util.*
 import kotlin.jvm.Transient
-import kotlin.jvm.javaClass
 
 @MappedSuperclass
 abstract class PrimaryKeyEntity : Persistable<UUID> {

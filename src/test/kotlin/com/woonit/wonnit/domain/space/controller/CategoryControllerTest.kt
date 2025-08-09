@@ -1,22 +1,13 @@
 package com.woonit.wonnit.domain.space.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.woonit.wonnit.domain.space.SpaceCategory
+import com.woonit.wonnit.support.BaseControllerTest
 import org.assertj.core.api.AssertionsForClassTypes
 import org.assertj.core.api.AssertionsForInterfaceTypes.assertThat
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.web.servlet.assertj.MockMvcTester
 
-@SpringBootTest
-@AutoConfigureMockMvc
-class CategoryControllerTest(
-    @Autowired private val mvcTester: MockMvcTester,
-    @Autowired val objectMapper: ObjectMapper
-) {
+class CategoryControllerTest : BaseControllerTest() {
 
     @Test
     fun getSpaceCategories() {

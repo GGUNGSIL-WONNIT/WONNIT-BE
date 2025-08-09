@@ -1,31 +1,16 @@
 package com.woonit.wonnit.domain.space.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.woonit.wonnit.domain.share.AddressInfo
 import com.woonit.wonnit.domain.share.PhoneNumber
 import com.woonit.wonnit.domain.space.SpaceFixture
 import com.woonit.wonnit.domain.space.dto.RecentSpaceResponse
-import com.woonit.wonnit.domain.space.repository.SpaceRepository
 import com.woonit.wonnit.domain.user.User
-import com.woonit.wonnit.domain.user.repository.UserRepository
-import jakarta.transaction.Transactional
+import com.woonit.wonnit.support.BaseControllerTest
 import org.assertj.core.api.AssertionsForInterfaceTypes.assertThat
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.web.servlet.assertj.MockMvcTester
 
-@SpringBootTest
-@Transactional
-@AutoConfigureMockMvc
-class SearchControllerTest(
-    @Autowired private val mvcTester: MockMvcTester,
-    @Autowired val objectMapper: ObjectMapper,
-    @Autowired val userRepository: UserRepository,
-    @Autowired val spaceRepository: SpaceRepository
-) {
+class SearchControllerTest : BaseControllerTest() {
 
     @Test
     fun getNearBySpaces() {

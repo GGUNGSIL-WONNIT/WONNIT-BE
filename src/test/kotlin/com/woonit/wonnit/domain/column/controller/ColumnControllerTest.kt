@@ -1,27 +1,14 @@
 package com.woonit.wonnit.domain.column.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.woonit.wonnit.domain.column.Column
 import com.woonit.wonnit.domain.column.dto.ColumnResponse
-import com.woonit.wonnit.domain.column.repository.ColumnRepository
+import com.woonit.wonnit.support.BaseControllerTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.web.servlet.assertj.MockMvcTester
-import org.springframework.transaction.annotation.Transactional
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@Transactional
-class ColumnControllerTest(
-    @Autowired val mvcTester: MockMvcTester,
-    @Autowired val objectMapper: ObjectMapper,
-    @Autowired val columnRepository: ColumnRepository
-) {
+class ColumnControllerTest : BaseControllerTest() {
 
     @BeforeEach
     fun setUp() {
