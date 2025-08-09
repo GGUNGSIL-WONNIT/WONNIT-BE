@@ -1,22 +1,27 @@
+spring.config.activate.on-profile: dev
+
 spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
+    defer-datasource-initialization: true
   datasource:
-    url: ${DB_URL:jdbc:h2:mem:testdb}
-    driver-class-name: ${DB_DRIVER:org.h2.Driver}
-    username: ${DB_USER:ggungsil}
-    password: ${DB_PASSWORD:}
+    url: jdbc:mysql://localhost:3306/ggungsil
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 1234
   h2:
     console:
       enabled: ${H2_CONSOLE:true}
+  sql:
+    init:
+      mode: always
 
 ---
+spring.config.activate.on-profile: prod
+
 spring:
-  config:
-    activate:
-      on-profile: prod
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}

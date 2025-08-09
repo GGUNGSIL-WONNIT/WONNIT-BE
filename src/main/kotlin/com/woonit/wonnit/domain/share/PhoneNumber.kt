@@ -5,7 +5,7 @@ import jakarta.persistence.Embeddable
 
 @Embeddable
 data class PhoneNumber(
-    @Column(unique = true)
+    @Column(unique = true, name = "phone_number")
     val value: String,
 ) {
     init {

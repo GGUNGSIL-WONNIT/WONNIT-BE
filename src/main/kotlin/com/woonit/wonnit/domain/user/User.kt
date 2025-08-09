@@ -2,7 +2,11 @@ package com.woonit.wonnit.domain.user
 
 import com.woonit.wonnit.domain.share.PhoneNumber
 import com.woonit.wonnit.domain.space.Space
-import jakarta.persistence.*
+import com.woonit.wonnit.global.entity.BaseEntity
+import jakarta.persistence.CascadeType
+import jakarta.persistence.Entity
+import jakarta.persistence.OneToMany
+import jakarta.persistence.Table
 import org.hibernate.annotations.NaturalId
 import org.hibernate.annotations.NaturalIdCache
 
@@ -17,12 +21,8 @@ class User(
     val phoneNumber: PhoneNumber,
 
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
-    val registeredSpaces: MutableList<Space> = mutableListOf(),
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: String? = null,
-) {
+    val registeredSpaces: MutableList<Space> = mutableListOf()
+) : BaseEntity() {
 
     init {
         if (name.isBlank()) {
