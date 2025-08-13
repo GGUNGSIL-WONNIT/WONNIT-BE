@@ -9,6 +9,7 @@ enum class SpaceErrorCode(
     override val type: String
 ) : ErrorCode {
 
+    /* VALIDATION 400 */
     INVALID_CATEGORY(
         "Space_001",
         "공간 카테고리가 유효하지 않습니다.",
@@ -22,5 +23,13 @@ enum class SpaceErrorCode(
         HttpStatus.BAD_REQUEST,
         "https://api.wonnit.com/errors/space/invalid-size"
     ),
+
+    /* NOT FOUND 404 */
+    NOT_FOUND(
+        "Space_003",
+        "공간을 찾을 수 없습니다.",
+        HttpStatus.NOT_FOUND,
+        "https://api.wonnit.com/errors/space/not-found"
+    )
 }
 
