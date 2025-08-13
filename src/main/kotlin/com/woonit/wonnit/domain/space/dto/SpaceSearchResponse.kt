@@ -4,6 +4,7 @@ import com.woonit.wonnit.domain.share.AddressInfo
 import com.woonit.wonnit.domain.share.AmountInfo
 import com.woonit.wonnit.domain.space.Space
 import com.woonit.wonnit.domain.space.SpaceCategory
+import com.woonit.wonnit.domain.space.SpaceStatus
 
 data class SpaceSearchResponse(
     val spaceId: String,
@@ -11,7 +12,8 @@ data class SpaceSearchResponse(
     val name: String,
     val addressInfo: AddressInfo,
     val mainImgUrl: String,
-    val amountInfo: AmountInfo
+    val amountInfo: AmountInfo,
+    val status: SpaceStatus
 ) {
     companion object {
         fun from(space: Space): SpaceSearchResponse {
@@ -21,7 +23,8 @@ data class SpaceSearchResponse(
                 name = space.name,
                 addressInfo = space.addressInfo,
                 mainImgUrl = space.mainImgUrl,
-                amountInfo = space.amountInfo
+                amountInfo = space.amountInfo,
+                status = space.spaceStatus
             )
         }
     }

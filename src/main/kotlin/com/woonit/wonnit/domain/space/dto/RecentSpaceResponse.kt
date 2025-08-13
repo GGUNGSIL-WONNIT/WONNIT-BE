@@ -8,7 +8,7 @@ data class RecentSpaceResponse(
     val spaceId: String,
     val category: SpaceCategory,
     val name: String,
-    val addressInfo: AddressInfo
+    val addressInfo: AddressInfo,
 ) {
     companion object {
         fun from(space: Space): RecentSpaceResponse {
@@ -16,7 +16,7 @@ data class RecentSpaceResponse(
                 spaceId = space.id.toString(),
                 category = space.spaceCategory,
                 name = space.name,
-                addressInfo = space.addressInfo
+                addressInfo = space.addressInfo,
             )
         }
     }
