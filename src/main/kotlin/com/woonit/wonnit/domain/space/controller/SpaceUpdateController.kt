@@ -25,7 +25,7 @@ class SpaceUpdateController(
     private lateinit var userId: UUID
 
     @PostMapping
-    @Operation(summary = "새로운 공간 등록",)
+    @Operation(summary = "새로운 공간 등록")
     @ApiResponses(
         value = [
             ApiResponse(
@@ -69,12 +69,12 @@ class SpaceUpdateController(
     }
 
     @PutMapping("/{spaceId}")
-    @Operation(summary = "공간 수정",)
+    @Operation(summary = "공간 수정")
     @ApiResponses(
         value = [
             ApiResponse(
-                responseCode = "201",
-                description = "Created",
+                responseCode = "200",
+                description = "OK",
                 content = [Content(
                     mediaType = "application/json",
                     schema = Schema(implementation = ApiResponse::class)
@@ -115,11 +115,54 @@ class SpaceUpdateController(
         ]
     )
     fun updateSpace(
-        @PathVariable("spaceId") spaceId: UUID,
+        @PathVariable spaceId: UUID,
         @Valid @RequestBody spaceSaveRequest: SpaceSaveRequest
     ): ResponseEntity<Void> {
         spaceUpdateService.updateSpace(spaceId, spaceSaveRequest, userId)
         return ResponseEntity.status(HttpStatus.OK).build()
     }
 
+    @DeleteMapping
+    @Operation(summary = "공간 일괄 삭제")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "204",
+                description = "No Content",
+                content = [Content(
+                    mediaType = "application/json",
+                    schema = Schema(implementation = ApiResponse::class)
+                )]
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "Access Denied",
+                content = [Content(
+                    mediaType = "application/json",
+                    schema = Schema(implementation = ProblemDetail::class)
+                )]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Space Not Found",
+                content = [Content(
+                    mediaType = "application/json",
+                    schema = Schema(implementation = ProblemDetail::class)
+                )]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Internal Server Error",
+                content = [Content(
+                    mediaType = "application/json",
+                    schema = Schema(implementation = ProblemDetail::class)
+                )]
+            ),
+        ]
+    )
+    fun deleteSpaces(
+        @RequestParam spaceIds: List<UUID>): ResponseEntity<Void> {
+        spaceUpdateService.deleteSpaces(spaceIds, userId)
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
+    }
 }
