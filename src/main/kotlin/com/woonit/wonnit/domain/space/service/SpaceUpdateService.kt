@@ -78,4 +78,18 @@ class SpaceUpdateService(
             tags            = request.tags
         )
     }
+
+    @Transactional
+    fun deleteSpaces(spaceIds: List<UUID>, userId: UUID) {
+        spaceIds.forEach { spaceId ->
+            val space = spaceRepository.findByIdOrNull(spaceId)
+                ?: throw NotFoundException(SpaceErrorCode.NOT_FOUND)
+
+            if (space.user.id != userId) {
+                throw ForbiddenException(CommonErrorCode.ACCESS_DENIED, "spaceId=$spaceId, userId=$userId")
+            }
+
+            spaceRepository.delete(space)
+        }
+    }
 }
