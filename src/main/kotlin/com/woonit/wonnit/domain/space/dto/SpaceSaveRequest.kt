@@ -51,4 +51,9 @@ data class SpaceSaveRequest(
     @Schema(description = "유의사항", example = "애완동물 출입 금지")
     val precautions: String? = null,
 
+    @Schema(description = "모델 스캔 대표 이미지 URL", example = "https://wonnit.com/model-thumbnail.jpg")
+    val modelThumbnailUrl: String? = null,
+
+    @Schema(description = "ai 공간 태그", example = "화이트보드")
+    val tags: MutableList<String> = mutableListOf(),
 )
