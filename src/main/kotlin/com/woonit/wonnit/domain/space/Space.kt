@@ -6,6 +6,7 @@ import com.woonit.wonnit.domain.share.OperationalInfo
 import com.woonit.wonnit.domain.share.PhoneNumber
 import com.woonit.wonnit.domain.user.User
 import com.woonit.wonnit.global.entity.BaseEntity
+import com.woonit.wonnit.global.entity.PrimaryKeyEntity
 import jakarta.persistence.*
 
 @Entity
@@ -51,6 +52,7 @@ class Space(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     val user: User
+
 ) : BaseEntity() {
 
     init {
@@ -58,9 +60,33 @@ class Space(
     }
 
     companion object {
-        fun register() {
-
-        }
+        fun register(
+            category: SpaceCategory,
+            name: String,
+            mainImgUrl: String,
+            subImgUrls: List<String>,
+            addressInfo: AddressInfo,
+            amountInfo: AmountInfo,
+            size: Double,
+            operationalInfo: OperationalInfo,
+            spaceModelUrl: String?,
+            user: User,
+            phoneNumber: PhoneNumber,
+            precautions: String?
+        ) = Space(
+            spaceCategory = category,
+            name = name,
+            mainImgUrl = mainImgUrl,
+            subImgUrls = subImgUrls,
+            addressInfo = addressInfo,
+            amountInfo = amountInfo,
+            size = size,
+            operationalInfo = operationalInfo,
+            spaceModelUrl = spaceModelUrl,
+            user = user,
+            phoneNumber = phoneNumber,
+            precautions = precautions
+        )
     }
 
     fun update() {
