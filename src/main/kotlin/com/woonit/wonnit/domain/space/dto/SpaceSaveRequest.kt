@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 
-data class SpaceCreateRequest(
+data class SpaceSaveRequest(
 
     @field:NotBlank
     @Schema(description = "공간 카테고리", example = "STUDIO", required = true)
@@ -27,7 +27,7 @@ data class SpaceCreateRequest(
     val mainImgUrl: String,
 
     @Schema(description = "서브 이미지 URL 목록", example = "[\"https://wonnit.com/sub1.jpg\", \"https://wonnit.com/sub2.jpg\"]")
-    val subImgUrls: List<String>,
+    val subImgUrls: MutableList<String>,
 
     @field:NotNull
     @Schema(description = "주소 정보", required = true)
@@ -50,4 +50,5 @@ data class SpaceCreateRequest(
 
     @Schema(description = "유의사항", example = "애완동물 출입 금지")
     val precautions: String? = null,
+
 )
