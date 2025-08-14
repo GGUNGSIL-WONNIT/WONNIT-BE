@@ -1,7 +1,7 @@
 package com.woonit.wonnit.domain.space.controller
 
 import com.woonit.wonnit.domain.space.service.SpaceRentService
-import org.springframework.beans.factory.annotation.Value
+import com.woonit.wonnit.global.annotation.UserId
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -15,12 +15,10 @@ import org.springframework.web.bind.annotation.RestController
 class SpaceRentController(
     val spaceRentService: SpaceRentService
 ) {
-    @Value("\${test-user.id}")
-    private lateinit var userId: String
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun rentSpace(
+        @UserId userId: String,
         @PathVariable spaceId: String,
     ) {
         spaceRentService.rent(userId, spaceId)
@@ -29,6 +27,7 @@ class SpaceRentController(
     @PatchMapping("/return-request")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun returnRequest(
+        @UserId userId: String,
         @PathVariable spaceId: String,
     ) {
         spaceRentService.returnRequest(userId, spaceId)
@@ -37,6 +36,7 @@ class SpaceRentController(
     @PatchMapping("/return-reject")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun returnReject(
+        @UserId userId: String,
         @PathVariable spaceId: String,
     ) {
         spaceRentService.returnReject(userId, spaceId)
@@ -45,6 +45,7 @@ class SpaceRentController(
     @PatchMapping("/return-approve")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun returnApprove(
+        @UserId userId: String,
         @PathVariable spaceId: String,
     ) {
         spaceRentService.returnApprove(userId, spaceId)
