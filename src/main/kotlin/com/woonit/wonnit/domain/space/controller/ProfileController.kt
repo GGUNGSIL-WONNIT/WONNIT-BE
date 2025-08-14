@@ -1,6 +1,7 @@
 package com.woonit.wonnit.domain.space.controller
 
-import com.woonit.wonnit.domain.space.dto.MySpaceResponse
+import com.woonit.wonnit.domain.space.dto.MyRentalSpacePageResponse
+import com.woonit.wonnit.domain.space.dto.MySpacePageResponse
 import com.woonit.wonnit.domain.space.service.SpaceQueryService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.GetMapping
@@ -19,7 +20,14 @@ class ProfileController(
     @GetMapping("/spaces")
     fun getMySpaces(
         @RequestParam("page", defaultValue = "0") page: Int,
-    ): List<MySpaceResponse> {
+    ): MySpacePageResponse {
         return spaceQueryService.getMySpaces(userId, page)
+    }
+
+    @GetMapping("/rental-spaces")
+    fun getRentalSpaces(
+        @RequestParam("page", defaultValue = "0") page: Int,
+    ): MyRentalSpacePageResponse {
+        return spaceQueryService.getMyRentalSpaces(userId, page)
     }
 }
