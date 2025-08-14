@@ -24,7 +24,7 @@ object SpaceFixture {
         phoneNumber: PhoneNumber = PhoneNumber("010-1234-5678"),
         precautions: String? = "주의사항",
         tags: MutableList<String> = mutableListOf("스터디", "강남"),
-        user: User
+        owner: User
     ): Space {
         return Space(
             name = name,
@@ -39,7 +39,7 @@ object SpaceFixture {
             phoneNumber = phoneNumber,
             precautions = precautions,
             tags = tags,
-            user
+            owner
         )
     }
 }

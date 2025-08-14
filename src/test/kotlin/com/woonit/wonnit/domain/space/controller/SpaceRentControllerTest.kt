@@ -23,7 +23,7 @@ class SpaceRentControllerTest : BaseControllerTest() {
         ReflectionTestUtils.setField(user, "id", UUID.fromString("028195e0-6999-137d-a747-0a02b343a12e"))
         userRepository.save(user)
 
-        space = SpaceFixture.createSpace("testSpace", user = user)
+        space = SpaceFixture.createSpace("testSpace", owner = user)
         spaceRepository.save(space)
     }
 

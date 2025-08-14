@@ -18,7 +18,7 @@ class RecentSpaceControllerTest : BaseControllerTest() {
 
         // given
         for (i: Int in 1..10) {
-            val space = SpaceFixture.createSpace("space${i}", user = user)
+            val space = SpaceFixture.createSpace("space${i}", owner = user)
             spaceRepository.save(space)
         }
 

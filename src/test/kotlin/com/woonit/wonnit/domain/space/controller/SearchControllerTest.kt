@@ -20,7 +20,7 @@ class SearchControllerTest : BaseControllerTest() {
         for (i: Int in 1..5) {
             val space = SpaceFixture.createSpace(
                 "space${i}",
-                user = user,
+                owner = user,
                 addressInfo = AddressInfo("address1", "address2", 37.6301, 127.0764),
             )
             spaceRepository.save(space)
@@ -29,7 +29,7 @@ class SearchControllerTest : BaseControllerTest() {
         for (i: Int in 1..5) {
             val space = SpaceFixture.createSpace(
                 "space${i}",
-                user = user,
+                owner = user,
                 addressInfo = AddressInfo("address1", "address2", -37.6301, -127.0764),
             )
             spaceRepository.save(space)
