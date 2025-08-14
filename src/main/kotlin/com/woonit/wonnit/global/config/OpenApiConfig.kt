@@ -8,16 +8,12 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class OpenApiConfig {
 
-    @Configuration
-    class OpenApiConfig {
-
-        @Bean
-        fun customOpenAPI(): OpenAPI =
-            OpenAPI().info(
-                Info()
-                    .title("WONNIT API")
-                    .version("v1")
-                    .description("API Docs (Swagger UI: /swagger-ui/index.html)")
-            )
-    }
+    @Bean
+    fun customOpenAPI(): OpenAPI =
+        OpenAPI().info(
+            Info()
+                .title("WONNIT API")
+                .version("v1")
+                .description("API Docs (Swagger UI: /swagger-ui/index.html)")
+        )
 }
