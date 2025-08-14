@@ -9,15 +9,12 @@ import com.woonit.wonnit.domain.user.User
 import com.woonit.wonnit.support.BaseControllerTest
 import org.assertj.core.api.AssertionsForInterfaceTypes.assertThat
 import org.junit.jupiter.api.Test
-import org.springframework.test.util.ReflectionTestUtils
-import java.util.*
 
 class ProfileControllerTest : BaseControllerTest() {
 
     @Test
-    fun getMySpaces() {
-        val user = User("user", PhoneNumber("010-0000-0000"))
-        ReflectionTestUtils.setField(user, "id", UUID.fromString("028195e0-6999-137d-a747-0a02b343a12e"))
+    fun `내가 등록한 공간을 조회한다`() {
+        val user = SpaceFixture.createUser()
         userRepository.save(user)
 
         for (i: Int in 1..15) {
@@ -38,14 +35,12 @@ class ProfileControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun getRentalSpaces() {
-        val owner = User("owner", PhoneNumber("010-0000-0000"))
-        userRepository.save(owner)
-
-
-        val renter = User("renter", PhoneNumber("010-1111-1111"))
-        ReflectionTestUtils.setField(renter, "id", UUID.fromString("028195e0-6999-137d-a747-0a02b343a12e"))
+    fun `내가 대여 중인 공간을 조회한다`() {
+        val renter = SpaceFixture.createUser()
         userRepository.save(renter)
+
+        val owner = User("owner", PhoneNumber("010-1111-1111"))
+        userRepository.save(owner)
 
         val spaces = (1..15).map {
             val space = SpaceFixture.createSpace("space$it", owner = owner)

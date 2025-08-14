@@ -19,8 +19,7 @@ class SpaceRentControllerTest : BaseControllerTest() {
 
     @BeforeEach
     fun setUp() {
-        user = User("testUser", PhoneNumber("010-1234-5678"))
-        ReflectionTestUtils.setField(user, "id", UUID.fromString("028195e0-6999-137d-a747-0a02b343a12e"))
+        user = SpaceFixture.createUser()
         userRepository.save(user)
 
         space = SpaceFixture.createSpace("testSpace", owner = user)

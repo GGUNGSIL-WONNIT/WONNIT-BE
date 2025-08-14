@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 class CategoryControllerTest : BaseControllerTest() {
 
     @Test
-    fun getSpaceCategories() {
+    fun `카테고리 리스트를 조회한다`() {
         val result = mvcTester.get().uri("/api/v1/categories")
             .exchange()
 

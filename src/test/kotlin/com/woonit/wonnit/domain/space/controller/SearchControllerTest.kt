@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test
 class SearchControllerTest : BaseControllerTest() {
 
     @Test
-    fun getNearBySpaces() {
+    fun `가까운 공간을 탐색한다`() {
         val user = User("user", PhoneNumber("010-0000-0000"))
         userRepository.save(user)
 
