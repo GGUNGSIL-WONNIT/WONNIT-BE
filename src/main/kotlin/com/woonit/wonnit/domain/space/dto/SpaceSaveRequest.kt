@@ -4,6 +4,7 @@ import com.woonit.wonnit.domain.share.AddressInfo
 import com.woonit.wonnit.domain.share.AmountInfo
 import com.woonit.wonnit.domain.share.OperationalInfo
 import com.woonit.wonnit.domain.share.PhoneNumber
+import com.woonit.wonnit.domain.space.SpaceCategory
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
@@ -12,7 +13,7 @@ data class SpaceSaveRequest(
 
     @field:NotBlank
     @Schema(description = "공간 카테고리", example = "STUDIO", required = true)
-    val category: String,
+    val category: SpaceCategory,
 
     @field:NotBlank
     @Schema(description = "공간 이름", example = "홍대 스튜디오", required = true)

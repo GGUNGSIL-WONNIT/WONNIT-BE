@@ -27,12 +27,9 @@ class SpaceUpdateService(
         val user = userRepository.findByIdOrNull(userId)
             ?: throw NotFoundException(UserErrorCode.NOT_FOUND)
 
-        val category = SpaceCategory.from(request.category)
-            ?: throw BadRequestException(SpaceErrorCode.INVALID_CATEGORY, "카테고리=${request.category}")
-
         val space = Space.register(
                 name = request.name,
-                category = category,
+                category = request.category,
                 mainImgUrl = request.mainImgUrl,
                 subImgUrls = request.subImgUrls,
                 addressInfo = request.address,
@@ -59,11 +56,8 @@ class SpaceUpdateService(
             throw ForbiddenException(CommonErrorCode.ACCESS_DENIED, "spaceId=$spaceId, userId=$userId")
         }
 
-        val category = SpaceCategory.from(request.category)
-            ?: throw BadRequestException(SpaceErrorCode.INVALID_CATEGORY, "category=${request.category}")
-
         space.update(
-            category        = category,
+            category        = request.category,
             name            = request.name,
             mainImgUrl      = request.mainImgUrl,
             subImgUrls      = request.subImgUrls,

@@ -6,15 +6,4 @@ enum class SpaceCategory {
     MUSIC_PRACTICE_ROOM,   // 음악 연습실
     DANCE_STUDIO,          // 댄스 연습실
     STUDY_ROOM;             // 회의실·스터디룸
-
-    companion object {
-        fun from(value: String?): SpaceCategory? {
-            val key = value
-                ?.trim()
-                ?.replace('-', '_')
-                ?.replace(' ', '_')
-                ?.uppercase()
-            return runCatching { key?.let { valueOf(it) } }.getOrNull()
-        }
-    }
 }
