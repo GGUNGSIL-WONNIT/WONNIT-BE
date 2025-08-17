@@ -4,6 +4,7 @@ import com.woonit.wonnit.domain.share.AddressInfo
 import com.woonit.wonnit.domain.share.AmountInfo
 import com.woonit.wonnit.domain.share.OperationalInfo
 import com.woonit.wonnit.domain.share.PhoneNumber
+import com.woonit.wonnit.domain.space.Space
 import com.woonit.wonnit.domain.space.SpaceCategory
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
@@ -13,7 +14,7 @@ import java.util.UUID
 data class SpaceDetailResponse(
     @Schema(description = "공간 ID", example = "028195e0-6999-137d-a747-0a02b343a12e")
     val id: UUID,
-    
+
     @Schema(description = "공간 카테고리", example = "STUDIO")
     val category: SpaceCategory,
 
@@ -29,7 +30,10 @@ data class SpaceDetailResponse(
     @Schema(description = "대표 이미지 URL", example = "https://wonnit.com/main.jpg")
     val mainImgUrl: String,
 
-    @Schema(description = "서브 이미지 URL 목록", example = "[\"https://wonnit.com/sub1.jpg\", \"https://wonnit.com/sub2.jpg\"]")
+    @Schema(
+        description = "서브 이미지 URL 목록",
+        example = "[\"https://wonnit.com/sub1.jpg\", \"https://wonnit.com/sub2.jpg\"]"
+    )
     val subImgUrls: MutableList<String>,
 
     @field:NotNull
@@ -51,12 +55,36 @@ data class SpaceDetailResponse(
     @Schema(description = "3D 공간 모델 URL", example = "https://wonnit.com/model.glb")
     val spaceModelUrl: String? = null,
 
-    @Schema(description = "유의사항", example = "애완동물 출입 금지")
-    val precautions: String? = null,
-
     @Schema(description = "모델 스캔 대표 이미지 URL", example = "https://wonnit.com/model-thumbnail.jpg")
     val modelThumbnailUrl: String? = null,
 
+    @Schema(description = "유의사항", example = "애완동물 출입 금지")
+    val precautions: String? = null,
+
     @Schema(description = "ai 공간 태그", example = "화이트보드")
     val tags: MutableList<String> = mutableListOf(),
-)
+) {
+    companion object {
+        fun from (
+            space: Space,
+            subImgUrls: MutableList<String>,
+            tags: MutableList<String>
+        )= SpaceDetailResponse(
+            id = space.id,
+            category = space.spaceCategory,
+            name = space.name,
+            phoneNumber = space.phoneNumber,
+            mainImgUrl = space.mainImgUrl,
+            subImgUrls = subImgUrls,
+            address = space.addressInfo,
+            amountInfo = space.amountInfo,
+            size = space.size,
+            operationInfo = space.operationalInfo,
+            spaceModelUrl = space.spaceModelUrl,
+            modelThumbnailUrl = space.modelThumbnailUrl,
+            precautions = space.precautions,
+            tags = tags,
+        )
+    }
+}
+
