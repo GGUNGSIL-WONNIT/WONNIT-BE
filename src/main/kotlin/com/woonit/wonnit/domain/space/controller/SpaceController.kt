@@ -1,6 +1,8 @@
 package com.woonit.wonnit.domain.space.controller
 
+import com.woonit.wonnit.domain.space.dto.SpaceDetailResponse
 import com.woonit.wonnit.domain.space.dto.SpaceSaveRequest
+import com.woonit.wonnit.domain.space.service.SpaceQueryService
 import com.woonit.wonnit.domain.space.service.SpaceUpdateService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -18,8 +20,9 @@ import java.util.UUID
 
 @RestController
 @RequestMapping("/api/v1/spaces")
-class SpaceUpdateController(
-    val spaceUpdateService: SpaceUpdateService
+class SpaceController(
+    val spaceUpdateService: SpaceUpdateService,
+    private val spaceQueryService: SpaceQueryService
 ) {
     @Value("\${test-user.id}")
     private lateinit var userId: UUID
@@ -160,9 +163,14 @@ class SpaceUpdateController(
             ),
         ]
     )
-    fun deleteSpaces(
-        @RequestParam spaceIds: List<UUID>): ResponseEntity<Void> {
+    fun deleteSpaces(@RequestParam spaceIds: List<UUID>): ResponseEntity<Void> {
         spaceUpdateService.deleteSpaces(spaceIds, userId)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
+    }
+
+    @GetMapping("/{spaceId}")
+    fun getSpaceDetail(@PathVariable spaceId: UUID): ResponseEntity<SpaceDetailResponse> {
+        val response = spaceQueryService.getSpaceDetail(spaceId)
+        return ResponseEntity.ok(response)
     }
 }
