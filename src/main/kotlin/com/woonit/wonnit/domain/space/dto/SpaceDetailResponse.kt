@@ -6,6 +6,7 @@ import com.woonit.wonnit.domain.share.OperationalInfo
 import com.woonit.wonnit.domain.share.PhoneNumber
 import com.woonit.wonnit.domain.space.Space
 import com.woonit.wonnit.domain.space.SpaceCategory
+import com.woonit.wonnit.domain.space.SpaceStatus
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
@@ -63,6 +64,9 @@ data class SpaceDetailResponse(
 
     @Schema(description = "ai 공간 태그", example = "화이트보드")
     val tags: MutableList<String> = mutableListOf(),
+
+    @Schema(description = "공간 상태", example = "AVAILABLE")
+    val status: SpaceStatus
 ) {
     companion object {
         fun from (
@@ -84,6 +88,7 @@ data class SpaceDetailResponse(
             modelThumbnailUrl = space.modelThumbnailUrl,
             precautions = space.precautions,
             tags = tags,
+            status = space.spaceStatus
         )
     }
 }
