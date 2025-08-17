@@ -86,10 +86,6 @@ class Space (
     var precautions: String? = precautions
         protected set
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    val user: User = user
-
     @ElementCollection
     @CollectionTable(
         name = "space_tags",
@@ -98,6 +94,15 @@ class Space (
     @Column(name = "tag", nullable = false)
     var tags: MutableList<String> = tags
         protected set
+    val user: User = user,
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    var spaceStatus: SpaceStatus = SpaceStatus.AVAILABLE,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "renter_id")
+    var renter: User? = null
 
     init {
         require(subImgUrls.isNotEmpty()) { "추가 사진은 비어있을 수 없습니다" }
@@ -165,5 +170,30 @@ class Space (
         this.phoneNumber     = phoneNumber
         this.precautions     = precautions
         this.tags = tags
+    }
+
+    fun rent(renter: User) {
+        require(this.spaceStatus == SpaceStatus.AVAILABLE) { "공간이 대여 가능한 상태가 아닙니다" }
+        this.renter = renter
+        this.spaceStatus = SpaceStatus.OCCUPIED
+    }
+
+    fun returnRequest(renter: User) {
+        require(this.spaceStatus == SpaceStatus.OCCUPIED) { "공간이 대여 중이 아닙니다" }
+        require(this.renter == renter) { "반납 요청 유저가 대여 중인 유저와 일치하지 않습니다" }
+        this.spaceStatus = SpaceStatus.RETURN_REQUEST
+    }
+
+    fun returnReject(renter: User) {
+        require(this.spaceStatus == SpaceStatus.RETURN_REQUEST) { "반납 요청 상태의 공간이 아닙니다" }
+        require(this.renter == renter) { "반납 요청 유저가 대여 중인 유저와 일치하지 않습니다" }
+        this.spaceStatus == SpaceStatus.RETURN_REJECTED
+    }
+
+    fun returnApprove(renter: User) {
+        require(this.spaceStatus == SpaceStatus.RETURN_REQUEST || this.spaceStatus == SpaceStatus.RETURN_REJECTED) { "반납 요청 또는 반납 반려 상태의 공간이 아닙니다" }
+        require(this.renter == renter) { "반납 요청 유저가 대여 중인 유저와 일치하지 않습니다" }
+        this.spaceStatus == SpaceStatus.AVAILABLE
+        this.renter == null
     }
 }

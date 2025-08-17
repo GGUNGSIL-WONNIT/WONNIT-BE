@@ -13,14 +13,14 @@ import org.junit.jupiter.api.Test
 class SearchControllerTest : BaseControllerTest() {
 
     @Test
-    fun getNearBySpaces() {
+    fun `가까운 공간을 탐색한다`() {
         val user = User("user", PhoneNumber("010-0000-0000"))
         userRepository.save(user)
 
         for (i: Int in 1..5) {
             val space = SpaceFixture.createSpace(
                 "space${i}",
-                user = user,
+                owner = user,
                 addressInfo = AddressInfo("address1", "address2", 37.6301, 127.0764),
             )
             spaceRepository.save(space)
@@ -29,7 +29,7 @@ class SearchControllerTest : BaseControllerTest() {
         for (i: Int in 1..5) {
             val space = SpaceFixture.createSpace(
                 "space${i}",
-                user = user,
+                owner = user,
                 addressInfo = AddressInfo("address1", "address2", -37.6301, -127.0764),
             )
             spaceRepository.save(space)

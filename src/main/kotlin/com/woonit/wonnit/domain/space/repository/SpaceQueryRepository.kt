@@ -27,6 +27,18 @@ class SpaceQueryRepository(
             .resultList
     }
 
+    fun countMySpaces(userId: String): Long {
+        return em
+            .createQuery(
+                "SELECT COUNT(*) FROM User u " +
+                        "JOIN u.registeredSpaces s " +
+                        "WHERE u.id = :userId",
+                Long::class.java
+            )
+            .setParameter("userId", UUID.fromString(userId))
+            .singleResult
+    }
+
     fun findRecentSpaces(): List<Space> {
         return em
             .createQuery(
@@ -71,6 +83,33 @@ class SpaceQueryRepository(
                 sin(dLon / 2) * sin(dLon / 2)
         val c = 2 * atan2(sqrt(a), sqrt(1 - a))
         return R * c
+    }
+
+
+    fun countMyRentalSpaces(userId: String): Long {
+        return em
+            .createQuery(
+                "SELECT COUNT(*) FROM Space s " +
+                        "JOIN s.renter r " +
+                        "WHERE r.id = :userId",
+                Long::class.java
+            )
+            .setParameter("userId", UUID.fromString(userId))
+            .singleResult
+    }
+
+    fun findMyRentalSpaces(userId: String, page: Int): List<Space> {
+        return em
+            .createQuery(
+                "SELECT s FROM Space s " +
+                        "JOIN s.renter r " +
+                        "WHERE r.id = :userId",
+                Space::class.java
+            )
+            .setParameter("userId", UUID.fromString(userId))
+            .setFirstResult(page * 10)
+            .setMaxResults(10)
+            .resultList
     }
 
     fun findSpace(spaceId: UUID): Space? =

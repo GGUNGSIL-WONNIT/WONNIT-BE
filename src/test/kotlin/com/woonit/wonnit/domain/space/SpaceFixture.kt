@@ -2,10 +2,19 @@ package com.woonit.wonnit.domain.space
 
 import com.woonit.wonnit.domain.share.*
 import com.woonit.wonnit.domain.user.User
+import org.springframework.test.util.ReflectionTestUtils
 import java.time.DayOfWeek
 import java.time.LocalDateTime
+import java.util.*
 
 object SpaceFixture {
+
+    fun createUser(): User {
+        val user = User("user", PhoneNumber("010-0000-0000"))
+        ReflectionTestUtils.setField(user, "id", UUID.fromString("028195e0-6999-137d-a747-0a02b343a12e"))
+
+        return user
+    }
 
     fun createSpace(
         name: String = "테스트 공간",
@@ -26,6 +35,7 @@ object SpaceFixture {
         tags: MutableList<String> = mutableListOf("스터디", "강남"),
         user: User,
         modelThumbnailUrl: String? = null,
+        owner: User
     ): Space {
         return Space(
             name = name,
@@ -40,7 +50,7 @@ object SpaceFixture {
             phoneNumber = phoneNumber,
             precautions = precautions,
             tags = tags,
-            user = user,
+            user = owner,
             modelThumbnailUrl = modelThumbnailUrl
         )
     }

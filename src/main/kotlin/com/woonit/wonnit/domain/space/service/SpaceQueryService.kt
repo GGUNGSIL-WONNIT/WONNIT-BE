@@ -1,5 +1,6 @@
 package com.woonit.wonnit.domain.space.service
 
+import com.woonit.wonnit.domain.space.dto.*
 import com.woonit.wonnit.domain.space.dto.MySpaceResponse
 import com.woonit.wonnit.domain.space.dto.RecentSpaceResponse
 import com.woonit.wonnit.domain.space.dto.SpaceDetailResponse
@@ -7,7 +8,6 @@ import com.woonit.wonnit.domain.space.dto.SpaceSearchResponse
 import com.woonit.wonnit.domain.space.repository.SpaceQueryRepository
 import com.woonit.wonnit.global.exception.business.NotFoundException
 import com.woonit.wonnit.global.exception.code.SpaceErrorCode
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -24,9 +24,20 @@ class SpaceQueryService(
         return SpaceDetailResponse.from(space, subImageUrls, tags)
     }
 
-    fun getMySpaces(userId: String, page: Int): List<MySpaceResponse> {
-        return spaceQueryRepository.findMySpaces(userId, page)
-            .map { space -> MySpaceResponse.from(space) }
+    fun getMySpaces(userId: String, page: Int): MySpacePageResponse {
+        return MySpacePageResponse.of(
+            spaceQueryRepository.findMySpaces(userId, page)
+                .map { space -> MySpaceResponse.from(space) },
+            spaceQueryRepository.countMySpaces(userId)
+        )
+    }
+
+    fun getMyRentalSpaces(userId: String, page: Int): MyRentalSpacePageResponse {
+        return MyRentalSpacePageResponse.of(
+            spaceQueryRepository.findMyRentalSpaces(userId, page)
+                .map { space -> MyRentalSpaceResponse.from(space) },
+            spaceQueryRepository.countMyRentalSpaces(userId)
+        )
     }
 
     fun getRecentSpaces(): List<RecentSpaceResponse> {

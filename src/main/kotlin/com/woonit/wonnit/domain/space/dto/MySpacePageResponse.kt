@@ -7,8 +7,22 @@ import com.woonit.wonnit.domain.space.SpaceCategory
 import com.woonit.wonnit.domain.space.SpaceStatus
 import io.swagger.v3.oas.annotations.media.Schema
 
-@Schema(description = "탐색된 공간 응답")
-data class SpaceSearchResponse(
+@Schema(description = "내가 등록한 공간 페이징 응답")
+data class MySpacePageResponse(
+    @Schema(description = "내가 등록한 공간 목록")
+    val spaces: List<MySpaceResponse>,
+    @Schema(description = "총 개수")
+    val totalCount: Long
+) {
+    companion object {
+        fun of(spaces: List<MySpaceResponse>, totalCount: Long): MySpacePageResponse {
+            return MySpacePageResponse(spaces, totalCount)
+        }
+    }
+}
+
+@Schema(description = "내가 등록한 공간 응답")
+data class MySpaceResponse(
     @Schema(description = "공간 ID")
     val spaceId: String,
     @Schema(description = "카테고리")
@@ -25,8 +39,8 @@ data class SpaceSearchResponse(
     val status: SpaceStatus
 ) {
     companion object {
-        fun from(space: Space): SpaceSearchResponse {
-            return SpaceSearchResponse(
+        fun from(space: Space): MySpaceResponse {
+            return MySpaceResponse(
                 spaceId = space.id.toString(),
                 category = space.spaceCategory,
                 name = space.name,
