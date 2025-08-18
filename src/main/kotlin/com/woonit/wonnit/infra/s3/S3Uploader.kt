@@ -8,7 +8,7 @@ import software.amazon.awssdk.services.s3.model.DeleteObjectRequest
 @Service
 class S3Uploader(
     private val s3Client: S3Client,
-    @Value("\${cloud.aws.s3.bucket}") private val bucket: String
+    @Value("\${spring.cloud.aws.s3.bucket}") private val bucket: String
 ) {
     fun deleteFile(key: String) {
         val request = DeleteObjectRequest.builder().bucket(bucket).key(key).build()

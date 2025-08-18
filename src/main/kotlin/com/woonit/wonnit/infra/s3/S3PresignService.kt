@@ -14,7 +14,7 @@ import java.util.UUID
 @Component
 class S3PresignService(
     private val presigner: S3Presigner,
-    @Value("\${cloud.aws.s3.bucket}") private val bucket: String
+    @Value("\${spring.cloud.aws.s3.bucket}") private val bucket: String
 ) {
     fun createUploadUrl(fileName: String): PresignUploadResponse {
         val safeName = fileName.substringAfterLast('/').substringAfterLast('\\')

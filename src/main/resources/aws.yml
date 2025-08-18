@@ -1,6 +1,7 @@
-cloud:
-  aws:
-    region:
-      static: ap-northeast-2
-    s3:
-      bucket: wonnit
+spring:
+  cloud:
+    aws:
+      region:
+        static: ap-northeast-2
+      s3:
+        bucket: wonnit
