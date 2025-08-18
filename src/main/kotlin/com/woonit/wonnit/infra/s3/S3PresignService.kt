@@ -1,6 +1,5 @@
 package com.woonit.wonnit.infra.s3
 
-import com.woonit.wonnit.domain.space.SpaceImage
 import com.woonit.wonnit.domain.space.dto.PresignUploadResponse
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
@@ -17,11 +16,10 @@ class S3PresignService(
     private val presigner: S3Presigner,
     @Value("\${cloud.aws.s3.bucket}") private val bucket: String
 ) {
-    fun createUploadUrl(userId: UUID, fileName: String): PresignUploadResponse {
+    fun createUploadUrl(fileName: String): PresignUploadResponse {
         val safeName = fileName.substringAfterLast('/').substringAfterLast('\\')
         val encodedName = URLEncoder.encode(safeName, StandardCharsets.UTF_8)
-        val prefix = "uploads/$userId"
-        val key = "$prefix/${UUID.randomUUID()}-$encodedName"
+        val key = "$${UUID.randomUUID()}-$encodedName"
 
         val put = PutObjectRequest.builder()
             .bucket(bucket)
