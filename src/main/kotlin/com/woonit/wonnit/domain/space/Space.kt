@@ -94,11 +94,14 @@ class Space (
     @Column(name = "tag", nullable = false)
     var tags: MutableList<String> = tags
         protected set
-    val user: User = user,
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    val user: User = user
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    var spaceStatus: SpaceStatus = SpaceStatus.AVAILABLE,
+    var spaceStatus: SpaceStatus = SpaceStatus.AVAILABLE
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "renter_id")
