@@ -1,6 +1,5 @@
 package com.woonit.wonnit.domain.space.controller
 
-import com.woonit.wonnit.domain.space.dto.PresignUploadRequest
 import com.woonit.wonnit.domain.space.dto.PresignUploadResponse
 import com.woonit.wonnit.domain.space.service.SpaceImageService
 import io.swagger.v3.oas.annotations.Operation
@@ -10,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -23,9 +23,6 @@ import java.util.*
 class SpaceImageController(
     private val spaceImageService: SpaceImageService
 ) {
-    @Value("\${test-user.id}")
-    private lateinit var userId: UUID
-
 
     @Operation(
         summary = "이미지 업로드 Presigned URL 발급",
@@ -52,8 +49,29 @@ class SpaceImageController(
         ]
     )
     @PostMapping
-    fun uploadImage(@RequestParam("image") request: PresignUploadRequest): ResponseEntity<PresignUploadResponse> {
-        val response = spaceImageService.uploadImage(userId, request)
+    fun uploadImage(@RequestParam("imageName") imageName: String): ResponseEntity<PresignUploadResponse> {
+        val response = spaceImageService.uploadImage(imageName)
         return ResponseEntity.ok(response)
+    }
+
+    @Operation(
+        summary = "이미지 삭제",
+        description = "업로드 시 발급받은 key를 전달하면 해당 이미지를 S3에서 삭제",
+        responses = [
+            ApiResponse(
+                responseCode = "204",
+                description = "No Content",
+                content = [Content(
+                    mediaType = "application/json",
+                    schema = Schema(implementation = ApiResponse::class)
+                )]
+            ),
+            ApiResponse(responseCode = "404", description = "파일을 찾을 수 없음")
+        ]
+    )
+    @DeleteMapping
+    fun deleteImage(@RequestParam("imageKey") imageKey: String): ResponseEntity<Void> {
+        spaceImageService.deleteImage(imageKey)
+        return ResponseEntity.noContent().build()
     }
 }
