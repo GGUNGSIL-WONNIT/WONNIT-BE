@@ -111,4 +111,46 @@ class SpaceQueryRepository(
             .setMaxResults(10)
             .resultList
     }
+
+    fun findSpace(spaceId: UUID): Space? =
+        em.createQuery(
+            """
+            select s
+            from Space s
+            where s.id = :id
+            """.trimIndent(),
+            Space::class.java
+        )
+            .setParameter("id", spaceId)
+            .resultList
+            .firstOrNull()
+
+    fun findSubImageUrls(spaceId: UUID): MutableList<String> =
+        em.createQuery(
+            """
+            select i
+            from Space s
+            join s.subImgUrls i
+            where s.id = :id
+            """.trimIndent(),
+            String::class.java
+        )
+            .setParameter("id", spaceId)
+            .resultList
+            .toMutableList()
+
+    fun findTags(spaceId: UUID): MutableList<String> =
+        em.createQuery(
+            """
+            select t
+            from Space s
+            join s.tags t
+            where s.id = :id
+            """.trimIndent(),
+            String::class.java
+        )
+            .setParameter("id", spaceId)
+            .resultList
+            .toMutableList()
+
 }

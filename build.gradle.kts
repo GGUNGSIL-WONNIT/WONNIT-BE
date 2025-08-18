@@ -51,6 +51,9 @@ dependencies {
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
 
+    implementation("io.awspring.cloud:spring-cloud-aws-starter-s3:3.1.1")
+    implementation("software.amazon.awssdk:s3:2.25.66")
+
     testCompileOnly("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")

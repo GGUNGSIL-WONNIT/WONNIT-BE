@@ -1,0 +1,95 @@
+package com.woonit.wonnit.domain.space.dto
+
+import com.woonit.wonnit.domain.share.AddressInfo
+import com.woonit.wonnit.domain.share.AmountInfo
+import com.woonit.wonnit.domain.share.OperationalInfo
+import com.woonit.wonnit.domain.share.PhoneNumber
+import com.woonit.wonnit.domain.space.Space
+import com.woonit.wonnit.domain.space.SpaceCategory
+import com.woonit.wonnit.domain.space.SpaceStatus
+import io.swagger.v3.oas.annotations.media.Schema
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
+import java.util.UUID
+
+data class SpaceDetailResponse(
+    @Schema(description = "공간 ID", example = "028195e0-6999-137d-a747-0a02b343a12e")
+    val id: UUID,
+
+    @Schema(description = "공간 카테고리", example = "STUDIO")
+    val category: SpaceCategory,
+
+    @field:NotBlank
+    @Schema(description = "공간 이름", example = "홍대 스튜디오")
+    val name: String,
+
+    @field:NotBlank
+    @Schema(description = "전화번호", example = "010-1234-5678")
+    val phoneNumber: PhoneNumber,
+
+    @field:NotBlank
+    @Schema(description = "대표 이미지 URL", example = "https://wonnit.com/main.jpg")
+    val mainImgUrl: String,
+
+    @Schema(
+        description = "서브 이미지 URL 목록",
+        example = "[\"https://wonnit.com/sub1.jpg\", \"https://wonnit.com/sub2.jpg\"]"
+    )
+    val subImgUrls: MutableList<String>,
+
+    @field:NotNull
+    @Schema(description = "주소 정보")
+    val address: AddressInfo,
+
+    @field:NotNull
+    @Schema(description = "금액 정보")
+    val amountInfo: AmountInfo,
+
+    @field:NotNull
+    @Schema(description = "공간 크기(m²)", example = "45.0")
+    val size: Double,
+
+    @field:NotNull
+    @Schema(description = "운영 정보")
+    val operationInfo: OperationalInfo,
+
+    @Schema(description = "3D 공간 모델 URL", example = "https://wonnit.com/model.glb")
+    val spaceModelUrl: String? = null,
+
+    @Schema(description = "모델 스캔 대표 이미지 URL", example = "https://wonnit.com/model-thumbnail.jpg")
+    val modelThumbnailUrl: String? = null,
+
+    @Schema(description = "유의사항", example = "애완동물 출입 금지")
+    val precautions: String? = null,
+
+    @Schema(description = "ai 공간 태그", example = "화이트보드")
+    val tags: MutableList<String> = mutableListOf(),
+
+    @Schema(description = "공간 상태", example = "AVAILABLE")
+    val status: SpaceStatus
+) {
+    companion object {
+        fun from (
+            space: Space,
+            subImgUrls: MutableList<String>,
+            tags: MutableList<String>
+        )= SpaceDetailResponse(
+            id = space.id,
+            category = space.spaceCategory,
+            name = space.name,
+            phoneNumber = space.phoneNumber,
+            mainImgUrl = space.mainImgUrl,
+            subImgUrls = subImgUrls,
+            address = space.addressInfo,
+            amountInfo = space.amountInfo,
+            size = space.size,
+            operationInfo = space.operationalInfo,
+            spaceModelUrl = space.spaceModelUrl,
+            modelThumbnailUrl = space.modelThumbnailUrl,
+            precautions = space.precautions,
+            tags = tags,
+            status = space.spaceStatus
+        )
+    }
+}
+

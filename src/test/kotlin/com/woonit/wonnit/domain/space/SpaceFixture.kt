@@ -20,7 +20,7 @@ object SpaceFixture {
         name: String = "테스트 공간",
         addressInfo: AddressInfo = AddressInfo("서울시 강남구", "테헤란로 123", 37.5, 127.0),
         mainImgUrl: String = "https://example.com/main.jpg",
-        subImgUrls: List<String> = listOf("https://example.com/sub1.jpg", "https://example.com/sub2.jpg"),
+        subImgUrls: MutableList<String> = mutableListOf("https://example.com/sub1.jpg", "https://example.com/sub2.jpg"),
         spaceCategory: SpaceCategory = SpaceCategory.STUDY_ROOM,
         size: Double = 50.0,
         operationalInfo: OperationalInfo = OperationalInfo(
@@ -33,6 +33,8 @@ object SpaceFixture {
         phoneNumber: PhoneNumber = PhoneNumber("010-1234-5678"),
         precautions: String? = "주의사항",
         tags: MutableList<String> = mutableListOf("스터디", "강남"),
+        user: User,
+        modelThumbnailUrl: String? = null,
         owner: User
     ): Space {
         return Space(
@@ -48,7 +50,8 @@ object SpaceFixture {
             phoneNumber = phoneNumber,
             precautions = precautions,
             tags = tags,
-            owner
+            user = owner,
+            modelThumbnailUrl = modelThumbnailUrl
         )
     }
 }
