@@ -13,11 +13,13 @@ import com.woonit.wonnit.global.exception.code.UserErrorCode
 import com.woonit.wonnit.support.BaseControllerTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
+import org.springframework.test.util.ReflectionTestUtils
 import java.time.DayOfWeek
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 
 class SpaceUpdateControllerTest : BaseControllerTest() {
 
@@ -93,24 +95,23 @@ class SpaceUpdateControllerTest : BaseControllerTest() {
         )
     }
 
-    private fun deleteSpaces(spaceIds: List<UUID>, userId: UUID) {
-        spaceIds.forEach { id ->
-            val space = spaceRepository.findByIdOrNull(id)
-                ?: throw NotFoundException(SpaceErrorCode.NOT_FOUND)
-
-            if (space.user.id != userId) {
-                throw ForbiddenException(CommonErrorCode.ACCESS_DENIED, "spaceId=$id, userId=$userId")
-            }
-            spaceRepository.delete(space)
-        }
-    }
-
     @Test
     fun `공간-등록`() {
         val user = User("user", PhoneNumber("010-0000-0000"))
+        ReflectionTestUtils.setField(user, "id", UUID.fromString(userId))
         userRepository.save(user)
 
-        val spaceId = createSpace(createRequest(), user.id)
+        val request = createRequest()
+        val requestJson = objectMapper.writeValueAsString(request)
+
+        val result = mvcTester.post().uri("/api/v1/spaces")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestJson)
+            .exchange()
+
+        assertThat(result).hasStatus(HttpStatus.CREATED)
+
+        val spaceId = createSpace(request, user.id)
         val saved = spaceRepository.findById(spaceId).orElseThrow()
         assertThat(saved.name).isEqualTo("테스트 공간")
     }
@@ -118,10 +119,24 @@ class SpaceUpdateControllerTest : BaseControllerTest() {
     @Test
      fun `공간-수정`() {
         val user = User("user", PhoneNumber("010-0000-0000"))
+        ReflectionTestUtils.setField(user, "id", UUID.fromString(userId))
         userRepository.save(user)
 
         val spaceId = createSpace(createRequest(), user.id)
-        updateSpace(spaceId, createRequest(name = "수정된 이름"), user.id)
+        entityManager.flush()
+        entityManager.clear()
+
+        val request = createRequest(name = "수정된 이름")
+        val requestJson = objectMapper.writeValueAsString(request)
+
+        val result = mvcTester.put().uri("/api/v1/spaces/{spaceId}", spaceId)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestJson)
+            .exchange()
+        assertThat(result).hasStatus(HttpStatus.NO_CONTENT)
+
+        entityManager.flush()
+        entityManager.clear()
 
         val updated = spaceRepository.findById(spaceId).orElseThrow()
         assertThat(updated.name).isEqualTo("수정된 이름")
@@ -130,17 +145,27 @@ class SpaceUpdateControllerTest : BaseControllerTest() {
    @Test
     fun `공간-삭제`() {
        val user = User("user", PhoneNumber("010-0000-0000"))
+       ReflectionTestUtils.setField(user, "id", UUID.fromString(userId))
        userRepository.save(user)
-
-       spaceRepository.flush()
 
        val spaceId1 = createSpace(createRequest(), user.id)
        val spaceId2 = createSpace(createRequest(), user.id)
-       deleteSpaces(listOf(spaceId1, spaceId2), user.id)
+       entityManager.flush()
+       entityManager.clear()
+
+       val result = mvcTester.delete().uri("/api/v1/spaces")
+           .queryParam("spaceIds", spaceId1.toString())
+           .queryParam("spaceIds", spaceId2.toString())
+           .exchange()
+
+       assertThat(result).hasStatus(HttpStatus.NO_CONTENT)
+
+       entityManager.flush()
+       entityManager.clear()
 
        val exists1 = spaceRepository.findById(spaceId1)
        val exists2 = spaceRepository.findById(spaceId2)
        assertThat(exists2).isEmpty
        assertThat(exists1).isEmpty
-    }
+   }
 }

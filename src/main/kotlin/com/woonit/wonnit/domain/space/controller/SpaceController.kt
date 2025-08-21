@@ -4,19 +4,18 @@ import com.woonit.wonnit.domain.space.dto.SpaceDetailResponse
 import com.woonit.wonnit.domain.space.dto.SpaceSaveRequest
 import com.woonit.wonnit.domain.space.service.SpaceQueryService
 import com.woonit.wonnit.domain.space.service.SpaceUpdateService
+import com.woonit.wonnit.global.annotation.UserId
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
-
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.util.UUID
+import java.util.*
 
 @RestController
 @RequestMapping("/api/v1/spaces")
@@ -24,8 +23,6 @@ class SpaceController(
     val spaceUpdateService: SpaceUpdateService,
     private val spaceQueryService: SpaceQueryService
 ) {
-    @Value("\${test-user.id}")
-    private lateinit var userId: UUID
 
     @PostMapping
     @Operation(summary = "새로운 공간 등록")
@@ -65,8 +62,10 @@ class SpaceController(
             ),
         ]
     )
-    fun createSpace(@Valid @RequestBody spaceSaveRequest: SpaceSaveRequest)
-    : ResponseEntity<Void> {
+    fun createSpace(
+        @Valid @RequestBody spaceSaveRequest: SpaceSaveRequest,
+        @UserId userId: String
+    ): ResponseEntity<Void> {
         spaceUpdateService.createSpace(spaceSaveRequest, userId)
         return ResponseEntity.status(HttpStatus.CREATED).build()
     }
@@ -118,11 +117,12 @@ class SpaceController(
         ]
     )
     fun updateSpace(
-        @PathVariable spaceId: UUID,
+        @PathVariable spaceId: String,
+        @UserId userId: String,
         @Valid @RequestBody spaceSaveRequest: SpaceSaveRequest
     ): ResponseEntity<Void> {
         spaceUpdateService.updateSpace(spaceId, spaceSaveRequest, userId)
-        return ResponseEntity.status(HttpStatus.OK).build()
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
 
     @DeleteMapping
@@ -163,7 +163,10 @@ class SpaceController(
             ),
         ]
     )
-    fun deleteSpaces(@RequestParam spaceIds: List<UUID>): ResponseEntity<Void> {
+    fun deleteSpaces(
+        @RequestParam spaceIds: List<String>,
+        @UserId userId: String
+    ): ResponseEntity<Void> {
         spaceUpdateService.deleteSpaces(spaceIds, userId)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }

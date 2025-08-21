@@ -1,6 +1,5 @@
 package com.woonit.wonnit.domain.space.controller
 
-import com.woonit.wonnit.domain.share.PhoneNumber
 import com.woonit.wonnit.domain.space.Space
 import com.woonit.wonnit.domain.space.SpaceFixture
 import com.woonit.wonnit.domain.user.User
@@ -9,8 +8,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
-import org.springframework.test.util.ReflectionTestUtils
-import java.util.UUID
 
 class SpaceRentControllerTest : BaseControllerTest() {
 

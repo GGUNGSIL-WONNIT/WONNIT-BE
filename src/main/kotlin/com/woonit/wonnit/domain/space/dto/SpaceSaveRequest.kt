@@ -11,38 +11,38 @@ import jakarta.validation.constraints.NotNull
 
 data class SpaceSaveRequest(
 
-    @field:NotBlank
+    @NotNull
     @Schema(description = "공간 카테고리", example = "STUDIO", required = true)
     val category: SpaceCategory,
 
-    @field:NotBlank
+    @NotBlank
     @Schema(description = "공간 이름", example = "홍대 스튜디오", required = true)
     val name: String,
 
-    @field:NotBlank
+    @NotBlank
     @Schema(description = "전화번호", example = "010-1234-5678", required = true)
     val phoneNumber: PhoneNumber,
 
-    @field:NotBlank
+    @NotBlank
     @Schema(description = "대표 이미지 URL", example = "https://wonnit.com/main.jpg", required = true)
     val mainImgUrl: String,
 
     @Schema(description = "서브 이미지 URL 목록", example = "[\"https://wonnit.com/sub1.jpg\", \"https://wonnit.com/sub2.jpg\"]")
     val subImgUrls: MutableList<String>,
 
-    @field:NotNull
+    @NotNull
     @Schema(description = "주소 정보", required = true)
     val address: AddressInfo,
 
-    @field:NotNull
+    @NotNull
     @Schema(description = "금액 정보", required = true)
     val amountInfo: AmountInfo,
 
-    @field:NotNull
+    @NotNull
     @Schema(description = "공간 크기(m²)", example = "45.0", required = true)
     val size: Double,
 
-    @field:NotNull
+    @NotNull
     @Schema(description = "운영 정보", required = true)
     val operationInfo: OperationalInfo,
 

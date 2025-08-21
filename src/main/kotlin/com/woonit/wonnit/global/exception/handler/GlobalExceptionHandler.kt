@@ -258,6 +258,8 @@ class GlobalExceptionHandler(
 
         val problemDetail = ProblemDetailBuilder.from(systemException, request)
 
+        exception.printStackTrace()
+
         loggingStrategy.log(systemException, request)
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(problemDetail)

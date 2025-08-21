@@ -33,7 +33,6 @@ object SpaceFixture {
         phoneNumber: PhoneNumber = PhoneNumber("010-1234-5678"),
         precautions: String? = "주의사항",
         tags: MutableList<String> = mutableListOf("스터디", "강남"),
-        user: User,
         modelThumbnailUrl: String? = null,
         owner: User
     ): Space {
