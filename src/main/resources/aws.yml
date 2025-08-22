@@ -5,3 +5,6 @@ spring:
         static: ap-northeast-2
       s3:
         bucket: wonnit
+      credentials:
+        access-key: ${AWS_S3_ACCESSKEY}
+        secret-key: ${AWS_S3_SECRETKEY}

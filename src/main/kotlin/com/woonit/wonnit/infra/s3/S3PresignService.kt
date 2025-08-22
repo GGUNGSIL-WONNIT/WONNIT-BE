@@ -9,7 +9,7 @@ import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignReques
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import java.time.Duration
-import java.util.UUID
+import java.util.*
 
 @Component
 class S3PresignService(
@@ -19,7 +19,7 @@ class S3PresignService(
     fun createUploadUrl(fileName: String): PresignUploadResponse {
         val safeName = fileName.substringAfterLast('/').substringAfterLast('\\')
         val encodedName = URLEncoder.encode(safeName, StandardCharsets.UTF_8)
-        val key = "$${UUID.randomUUID()}-$encodedName"
+        val key = "${UUID.randomUUID()}-$encodedName"
 
         val put = PutObjectRequest.builder()
             .bucket(bucket)
