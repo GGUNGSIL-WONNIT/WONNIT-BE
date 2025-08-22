@@ -7,7 +7,6 @@ plugins {
 }
 
 group = "com.woonit"
-version = "0.0.1-SNAPSHOT"
 
 java {
     toolchain {
@@ -76,4 +75,9 @@ allOpen {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+
+tasks.named<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
+    archiveFileName.set("wonnit-app.jar")
 }

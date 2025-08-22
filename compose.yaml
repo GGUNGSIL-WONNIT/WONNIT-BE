@@ -14,5 +14,17 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
 
+  app:
+    image: maruhan/wonnit:latest
+    container_name: wonnit-app
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    environment:
+      TZ: Asia/Seoul
+    depends_on:
+      - mysql
+
 volumes:
   mysql_data:
