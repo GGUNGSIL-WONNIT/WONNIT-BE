@@ -12,7 +12,7 @@ import jakarta.validation.constraints.NotNull
 data class SpaceSaveRequest(
 
     @NotNull
-    @Schema(description = "공간 카테고리", example = "STUDIO", required = true)
+    @Schema(description = "공간 카테고리", example = "DANCE_STUDIO", required = true)
     val category: SpaceCategory,
 
     @NotBlank
@@ -21,13 +21,13 @@ data class SpaceSaveRequest(
 
     @NotBlank
     @Schema(description = "전화번호", example = "010-1234-5678", required = true)
-    val phoneNumber: PhoneNumber,
+    val phoneNumber: String,
 
     @NotBlank
-    @Schema(description = "대표 이미지 URL", example = "https://wonnit.com/main.jpg", required = true)
+    @Schema(description = "대표 이미지 URL", example = "https://wonnit.s3.ap-northeast-2.amazonaws.com/main.jpg", required = true)
     val mainImgUrl: String,
 
-    @Schema(description = "서브 이미지 URL 목록", example = "[\"https://wonnit.com/sub1.jpg\", \"https://wonnit.com/sub2.jpg\"]")
+    @Schema(description = "서브 이미지 URL 목록", example = "[\"https://wonnit.s3.ap-northeast-2.amazonaws.com/sub1.jpg\", \"https://wonnit.s3.ap-northeast-2.amazonaws.com/sub2.jpg\"]")
     val subImgUrls: MutableList<String>,
 
     @NotNull
@@ -55,6 +55,6 @@ data class SpaceSaveRequest(
     @Schema(description = "모델 스캔 대표 이미지 URL", example = "https://wonnit.com/model-thumbnail.jpg")
     val modelThumbnailUrl: String? = null,
 
-    @Schema(description = "ai 공간 태그", example = "화이트보드")
+    @Schema(description = "ai 공간 태그 리스트", example = "[화이트보드]")
     val tags: MutableList<String> = mutableListOf(),
 )

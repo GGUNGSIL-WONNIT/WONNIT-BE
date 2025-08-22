@@ -14,12 +14,13 @@ import java.util.*
 @Component
 class S3PresignService(
     private val presigner: S3Presigner,
-    @Value("\${spring.cloud.aws.s3.bucket}") private val bucket: String
+    @Value("\${spring.cloud.aws.s3.bucket}") private val bucket: String,
+    @Value("\${spring.cloud.aws.region.static}") private val region: String
 ) {
     fun createUploadUrl(fileName: String): PresignUploadResponse {
         val safeName = fileName.substringAfterLast('/').substringAfterLast('\\')
-        val encodedName = URLEncoder.encode(safeName, StandardCharsets.UTF_8)
-        val key = "${UUID.randomUUID()}-$encodedName"
+        val base64Name = Base64.getUrlEncoder().encodeToString(safeName.toByteArray(StandardCharsets.UTF_8))
+        val key = "${UUID.randomUUID()}-$base64Name"
 
         val put = PutObjectRequest.builder()
             .bucket(bucket)
@@ -35,7 +36,7 @@ class S3PresignService(
 
         return PresignUploadResponse(
             uploadUrl = presigned.url().toExternalForm(),
-            key = key
+            url = "https://${bucket}.s3.${region}.amazonaws.com/${key}"
         )
     }
 }

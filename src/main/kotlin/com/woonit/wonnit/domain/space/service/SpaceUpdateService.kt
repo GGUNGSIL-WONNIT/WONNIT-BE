@@ -1,5 +1,6 @@
 package com.woonit.wonnit.domain.space.service
 
+import com.woonit.wonnit.domain.share.PhoneNumber
 import com.woonit.wonnit.domain.space.Space
 import com.woonit.wonnit.domain.space.dto.SpaceSaveRequest
 import com.woonit.wonnit.domain.space.repository.SpaceRepository
@@ -38,7 +39,7 @@ class SpaceUpdateService(
             modelThumbnailUrl = request.modelThumbnailUrl,
             precautions = request.precautions,
             user = user,
-            phoneNumber = request.phoneNumber,
+            phoneNumber = PhoneNumber(request.phoneNumber),
             tags = request.tags
         )
 
@@ -65,7 +66,7 @@ class SpaceUpdateService(
             operationalInfo = request.operationInfo,
             spaceModelUrl = request.spaceModelUrl,
             modelThumbnailUrl = request.modelThumbnailUrl,
-            phoneNumber = request.phoneNumber,
+            phoneNumber = PhoneNumber(request.phoneNumber),
             precautions = request.precautions,
             tags = request.tags
         )

@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
-import org.springframework.test.util.ReflectionTestUtils
 import java.time.DayOfWeek
 import java.time.LocalDateTime
 import java.util.*
@@ -30,7 +29,7 @@ class SpaceUpdateControllerTest : BaseControllerTest() {
     ) = SpaceSaveRequest(
         category = category,
         name = name,
-        phoneNumber = PhoneNumber("010-0000-0000"),
+        phoneNumber = "010-0000-0000",
         mainImgUrl = mainImg,
         subImgUrls = mutableListOf("https://img/1.jpg", "https://img/2.jpg"),
         address = AddressInfo("서울시 OO구", null, 37.5, 127.0),
@@ -44,28 +43,28 @@ class SpaceUpdateControllerTest : BaseControllerTest() {
         spaceModelUrl = "https://model.glb",
         modelThumbnailUrl = "https://model-thumb.jpg",
         precautions = "조심히 사용",
-        tags = mutableListOf("태그1","태그2")
+        tags = mutableListOf("태그1", "태그2")
     )
 
     private fun createSpace(request: SpaceSaveRequest, userId: UUID): UUID {
         val user = userRepository.findByIdOrNull(userId)
-         ?: throw NotFoundException(UserErrorCode.NOT_FOUND)
+            ?: throw NotFoundException(UserErrorCode.NOT_FOUND)
 
         val space = Space.register(
-            category        = request.category,
-            name            = request.name,
-            mainImgUrl      = request.mainImgUrl,
-            subImgUrls      = request.subImgUrls.toMutableList(),
-            addressInfo     = request.address,
-            amountInfo      = request.amountInfo,
-            size            = request.size,
+            category = request.category,
+            name = request.name,
+            mainImgUrl = request.mainImgUrl,
+            subImgUrls = request.subImgUrls.toMutableList(),
+            addressInfo = request.address,
+            amountInfo = request.amountInfo,
+            size = request.size,
             operationalInfo = request.operationInfo,
-            spaceModelUrl   = request.spaceModelUrl,
+            spaceModelUrl = request.spaceModelUrl,
             modelThumbnailUrl = request.modelThumbnailUrl,
-            user            = user,
-            phoneNumber     = request.phoneNumber,
-            precautions     = request.precautions,
-            tags            = request.tags.toMutableList()
+            user = user,
+            phoneNumber = PhoneNumber(request.phoneNumber),
+            precautions = request.precautions,
+            tags = request.tags.toMutableList()
         )
         return spaceRepository.save(space).id
     }
@@ -79,19 +78,19 @@ class SpaceUpdateControllerTest : BaseControllerTest() {
         }
 
         space.update(
-            category        = request.category,
-            name            = request.name,
-            mainImgUrl      = request.mainImgUrl,
-            subImgUrls      = request.subImgUrls.toMutableList(),
-            addressInfo     = request.address,
-            amountInfo      = request.amountInfo,
-            size            = request.size,
+            category = request.category,
+            name = request.name,
+            mainImgUrl = request.mainImgUrl,
+            subImgUrls = request.subImgUrls.toMutableList(),
+            addressInfo = request.address,
+            amountInfo = request.amountInfo,
+            size = request.size,
             operationalInfo = request.operationInfo,
-            spaceModelUrl   = request.spaceModelUrl,
+            spaceModelUrl = request.spaceModelUrl,
             modelThumbnailUrl = request.modelThumbnailUrl,
-            phoneNumber     = request.phoneNumber,
-            precautions     = request.precautions,
-            tags            = request.tags.toMutableList()
+            phoneNumber = PhoneNumber(request.phoneNumber),
+            precautions = request.precautions,
+            tags = request.tags.toMutableList()
         )
     }
 
@@ -117,7 +116,7 @@ class SpaceUpdateControllerTest : BaseControllerTest() {
     }
 
     @Test
-     fun `공간-수정`() {
+    fun `공간-수정`() {
         val user = User("user", PhoneNumber("010-0000-0000"))
         userRepository.save(user)
 
@@ -140,32 +139,32 @@ class SpaceUpdateControllerTest : BaseControllerTest() {
 
         val updated = spaceRepository.findById(spaceId).orElseThrow()
         assertThat(updated.name).isEqualTo("수정된 이름")
-     }
+    }
 
-   @Test
+    @Test
     fun `공간-삭제`() {
-       val user = User("user", PhoneNumber("010-0000-0000"))
-       userRepository.save(user)
+        val user = User("user", PhoneNumber("010-0000-0000"))
+        userRepository.save(user)
 
-       val spaceId1 = createSpace(createRequest(), user.id)
-       val spaceId2 = createSpace(createRequest(), user.id)
-       entityManager.flush()
-       entityManager.clear()
+        val spaceId1 = createSpace(createRequest(), user.id)
+        val spaceId2 = createSpace(createRequest(), user.id)
+        entityManager.flush()
+        entityManager.clear()
 
-       val result = mvcTester.delete().uri("/api/v1/spaces")
-           .param("userId", user.id.toString())
-           .queryParam("spaceIds", spaceId1.toString())
-           .queryParam("spaceIds", spaceId2.toString())
-           .exchange()
+        val result = mvcTester.delete().uri("/api/v1/spaces")
+            .param("userId", user.id.toString())
+            .queryParam("spaceIds", spaceId1.toString())
+            .queryParam("spaceIds", spaceId2.toString())
+            .exchange()
 
-       assertThat(result).hasStatus(HttpStatus.NO_CONTENT)
+        assertThat(result).hasStatus(HttpStatus.NO_CONTENT)
 
-       entityManager.flush()
-       entityManager.clear()
+        entityManager.flush()
+        entityManager.clear()
 
-       val exists1 = spaceRepository.findById(spaceId1)
-       val exists2 = spaceRepository.findById(spaceId2)
-       assertThat(exists2).isEmpty
-       assertThat(exists1).isEmpty
-   }
+        val exists1 = spaceRepository.findById(spaceId1)
+        val exists2 = spaceRepository.findById(spaceId2)
+        assertThat(exists2).isEmpty
+        assertThat(exists1).isEmpty
+    }
 }

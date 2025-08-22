@@ -15,13 +15,13 @@ class S3PresignServiceTest {
     @Test
     fun `createUploadUrl은 유효한 PresignUploadResponse를 반환해야 한다`() {
         // given
-        val fileName = "test-image.jpg"
+        val fileName = "테스트.jpg"
 
         // when
         val response: PresignUploadResponse = s3PresignService.createUploadUrl(fileName)
 
         // then
         assertThat(response.uploadUrl).isNotBlank()
-        assertThat(response.key).contains(fileName)
+        assertThat(response.url).isNotBlank()
     }
 }

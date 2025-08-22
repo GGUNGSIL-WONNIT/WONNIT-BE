@@ -8,12 +8,11 @@ import com.woonit.wonnit.domain.user.User
 import com.woonit.wonnit.global.entity.BaseEntity
 import jakarta.persistence.*
 import lombok.NoArgsConstructor
-import kotlin.reflect.KProperty
 
 @Entity
 @Table(name = "spaces")
 @NoArgsConstructor
-class Space (
+class Space(
     name: String,
     addressInfo: AddressInfo,
     mainImgUrl: String,
@@ -28,7 +27,7 @@ class Space (
     precautions: String?,
     tags: MutableList<String>,
     user: User,
-): BaseEntity () {
+) : BaseEntity() {
 
     @Column(length = 255, nullable = false)
     var name: String = name
@@ -160,18 +159,18 @@ class Space (
         precautions: String?,
         tags: MutableList<String> = mutableListOf(),
     ) {
-        this.spaceCategory   = category
-        this.name            = name
-        this.mainImgUrl      = mainImgUrl
-        this.subImgUrls      = subImgUrls
-        this.addressInfo     = addressInfo
-        this.amountInfo      = amountInfo
-        this.size            = size
+        this.spaceCategory = category
+        this.name = name
+        this.mainImgUrl = mainImgUrl
+        this.subImgUrls = subImgUrls
+        this.addressInfo = addressInfo
+        this.amountInfo = amountInfo
+        this.size = size
         this.operationalInfo = operationalInfo
-        this.spaceModelUrl   = spaceModelUrl
+        this.spaceModelUrl = spaceModelUrl
         this.modelThumbnailUrl = modelThumbnailUrl
-        this.phoneNumber     = phoneNumber
-        this.precautions     = precautions
+        this.phoneNumber = phoneNumber
+        this.precautions = precautions
         this.tags = tags
     }
 
@@ -190,13 +189,13 @@ class Space (
     fun returnReject(renter: User) {
         require(this.spaceStatus == SpaceStatus.RETURN_REQUEST) { "반납 요청 상태의 공간이 아닙니다" }
         require(this.renter == renter) { "반납 요청 유저가 대여 중인 유저와 일치하지 않습니다" }
-        this.spaceStatus == SpaceStatus.RETURN_REJECTED
+        this.spaceStatus = SpaceStatus.RETURN_REJECTED
     }
 
     fun returnApprove(renter: User) {
         require(this.spaceStatus == SpaceStatus.RETURN_REQUEST || this.spaceStatus == SpaceStatus.RETURN_REJECTED) { "반납 요청 또는 반납 반려 상태의 공간이 아닙니다" }
         require(this.renter == renter) { "반납 요청 유저가 대여 중인 유저와 일치하지 않습니다" }
-        this.spaceStatus == SpaceStatus.AVAILABLE
-        this.renter == null
+        this.spaceStatus = SpaceStatus.AVAILABLE
+        this.renter = null
     }
 }

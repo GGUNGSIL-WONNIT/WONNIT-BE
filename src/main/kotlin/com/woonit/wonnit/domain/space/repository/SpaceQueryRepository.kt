@@ -1,6 +1,7 @@
 package com.woonit.wonnit.domain.space.repository
 
 import com.woonit.wonnit.domain.space.Space
+import com.woonit.wonnit.domain.space.SpaceStatus
 import jakarta.persistence.EntityManager
 import org.springframework.stereotype.Repository
 import java.util.*
@@ -91,10 +92,12 @@ class SpaceQueryRepository(
             .createQuery(
                 "SELECT COUNT(*) FROM Space s " +
                         "JOIN s.renter r " +
-                        "WHERE r.id = :userId",
+                        "WHERE r.id = :userId AND (s.spaceStatus = :occupied OR s.spaceStatus = :return_request)",
                 Long::class.java
             )
             .setParameter("userId", UUID.fromString(userId))
+            .setParameter("occupied", SpaceStatus.OCCUPIED)
+            .setParameter("return_request", SpaceStatus.RETURN_REQUEST)
             .singleResult
     }
 
@@ -103,10 +106,12 @@ class SpaceQueryRepository(
             .createQuery(
                 "SELECT s FROM Space s " +
                         "JOIN s.renter r " +
-                        "WHERE r.id = :userId",
+                        "WHERE r.id = :userId AND (s.spaceStatus = :occupied OR s.spaceStatus = :return_request)",
                 Space::class.java
             )
             .setParameter("userId", UUID.fromString(userId))
+            .setParameter("occupied", SpaceStatus.OCCUPIED)
+            .setParameter("return_request", SpaceStatus.RETURN_REQUEST)
             .setFirstResult(page * 10)
             .setMaxResults(10)
             .resultList
