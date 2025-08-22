@@ -1,5 +1,6 @@
 package com.woonit.wonnit.domain.space.controller
 
+import com.woonit.wonnit.domain.share.PhoneNumber
 import com.woonit.wonnit.domain.space.Space
 import com.woonit.wonnit.domain.space.SpaceFixture
 import com.woonit.wonnit.domain.user.User
@@ -16,7 +17,7 @@ class SpaceRentControllerTest : BaseControllerTest() {
 
     @BeforeEach
     fun setUp() {
-        user = SpaceFixture.createUser()
+        user = User("user", PhoneNumber("010-0000-0000"))
         userRepository.save(user)
 
         space = SpaceFixture.createSpace("testSpace", owner = user)
@@ -25,8 +26,12 @@ class SpaceRentControllerTest : BaseControllerTest() {
 
     @Test
     fun `공간을 대여한다`() {
+        val renter = User("renter", PhoneNumber("010-0000-0001"))
+        userRepository.save(renter)
+
         // when
         val result = mvcTester.post().uri("/api/v1/space/${space.id}/rentals")
+            .param("userId", renter.id.toString())
             .exchange()
 
         // then
@@ -35,9 +40,13 @@ class SpaceRentControllerTest : BaseControllerTest() {
 
     @Test
     fun `공간 반납 요청을 한다`() {
+        val renter = User("renter", PhoneNumber("010-0000-0001"))
+        userRepository.save(renter)
+
         // when
-        space.rent(user)
+        space.rent(renter)
         val result = mvcTester.patch().uri("/api/v1/space/${space.id}/rentals/return-request")
+            .param("userId", renter.id.toString())
             .exchange()
 
         // then
@@ -46,10 +55,14 @@ class SpaceRentControllerTest : BaseControllerTest() {
 
     @Test
     fun `공간 반납 요청을 거절한다`() {
+        val renter = User("renter", PhoneNumber("010-0000-0001"))
+        userRepository.save(renter)
+
         // when
-        space.rent(user)
-        space.returnRequest(user)
+        space.rent(renter)
+        space.returnRequest(renter)
         val result = mvcTester.patch().uri("/api/v1/space/${space.id}/rentals/return-reject")
+            .param("userId", renter.id.toString())
             .exchange()
 
         // then
@@ -58,10 +71,14 @@ class SpaceRentControllerTest : BaseControllerTest() {
 
     @Test
     fun `공간 반납 요청을 승인한다`() {
+        val renter = User("renter", PhoneNumber("010-0000-0001"))
+        userRepository.save(renter)
+
         // when
-        space.rent(user)
-        space.returnRequest(user)
+        space.rent(renter)
+        space.returnRequest(renter)
         val result = mvcTester.patch().uri("/api/v1/space/${space.id}/rentals/return-approve")
+            .param("userId", renter.id.toString())
             .exchange()
 
         // then
@@ -70,11 +87,15 @@ class SpaceRentControllerTest : BaseControllerTest() {
 
     @Test
     fun `반려된 공간에 대해 반납을 승인한다`() {
+        val renter = User("renter", PhoneNumber("010-0000-0001"))
+        userRepository.save(renter)
+
         // when
-        space.rent(user)
-        space.returnRequest(user)
-        space.returnReject(user)
+        space.rent(renter)
+        space.returnRequest(renter)
+        space.returnReject(renter)
         val result = mvcTester.patch().uri("/api/v1/space/${space.id}/rentals/return-approve")
+            .param("userId", renter.id.toString())
             .exchange()
 
         // then

@@ -1,16 +1,10 @@
 package com.woonit.wonnit.domain.space.controller
 
 import com.woonit.wonnit.domain.space.service.SpaceRentService
-import com.woonit.wonnit.global.annotation.UserId
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.ResponseStatus
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @Tag(name = "Space Rent", description = "공간 대여 API")
 @RestController
@@ -22,7 +16,7 @@ class SpaceRentController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun rentSpace(
-        @UserId userId: String,
+        @RequestParam userId: String,
         @PathVariable spaceId: String,
     ) {
         spaceRentService.rent(userId, spaceId)
@@ -32,7 +26,7 @@ class SpaceRentController(
     @PatchMapping("/return-request")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun returnRequest(
-        @UserId userId: String,
+        @RequestParam userId: String,
         @PathVariable spaceId: String,
     ) {
         spaceRentService.returnRequest(userId, spaceId)
@@ -42,7 +36,7 @@ class SpaceRentController(
     @PatchMapping("/return-reject")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun returnReject(
-        @UserId userId: String,
+        @RequestParam userId: String,
         @PathVariable spaceId: String,
     ) {
         spaceRentService.returnReject(userId, spaceId)
@@ -52,7 +46,7 @@ class SpaceRentController(
     @PatchMapping("/return-approve")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun returnApprove(
-        @UserId userId: String,
+        @RequestParam userId: String,
         @PathVariable spaceId: String,
     ) {
         spaceRentService.returnApprove(userId, spaceId)

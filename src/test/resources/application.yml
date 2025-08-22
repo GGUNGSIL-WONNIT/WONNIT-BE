@@ -1,5 +1,3 @@
-test-user.id: 028195e0-6999-137d-a747-0a02b343a12e
-
 spring:
   sql:
     init:

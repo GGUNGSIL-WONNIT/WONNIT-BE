@@ -7,11 +7,9 @@ import com.woonit.wonnit.domain.user.repository.UserRepository
 import jakarta.persistence.EntityManager
 import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.web.servlet.assertj.MockMvcTester
-import org.springframework.transaction.support.TransactionTemplate
 
 @Transactional
 @SpringBootTest
@@ -35,8 +33,5 @@ abstract class BaseControllerTest {
 
     @Autowired
     protected lateinit var entityManager: EntityManager
-
-    @Value("\${test-user.id}")
-    protected lateinit var userId: String
 
 }

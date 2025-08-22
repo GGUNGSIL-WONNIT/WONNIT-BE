@@ -9,6 +9,7 @@ import com.woonit.wonnit.domain.user.User
 import com.woonit.wonnit.support.BaseControllerTest
 import org.assertj.core.api.AssertionsForInterfaceTypes.assertThat
 import org.junit.jupiter.api.Test
+import java.util.UUID
 
 class ProfileControllerTest : BaseControllerTest() {
 
@@ -24,6 +25,7 @@ class ProfileControllerTest : BaseControllerTest() {
 
         val result = mvcTester.get().uri("/api/v1/my/spaces")
             .param("page", "1")
+            .param("userId", user.id.toString())
             .exchange()
 
         assertThat(result).hasStatusOk()
@@ -55,6 +57,7 @@ class ProfileControllerTest : BaseControllerTest() {
         }
         val result = mvcTester.get().uri("/api/v1/my/rental-spaces")
             .param("page", "0")
+            .param("userId", renter.id.toString())
             .exchange()
 
         assertThat(result).hasStatusOk()

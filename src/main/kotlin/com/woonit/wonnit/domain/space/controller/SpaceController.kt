@@ -64,7 +64,7 @@ class SpaceController(
     )
     fun createSpace(
         @Valid @RequestBody spaceSaveRequest: SpaceSaveRequest,
-        @UserId userId: String
+        @RequestParam userId: String
     ): ResponseEntity<Void> {
         spaceUpdateService.createSpace(spaceSaveRequest, userId)
         return ResponseEntity.status(HttpStatus.CREATED).build()
@@ -118,7 +118,7 @@ class SpaceController(
     )
     fun updateSpace(
         @PathVariable spaceId: String,
-        @UserId userId: String,
+        @RequestParam userId: String,
         @Valid @RequestBody spaceSaveRequest: SpaceSaveRequest
     ): ResponseEntity<Void> {
         spaceUpdateService.updateSpace(spaceId, spaceSaveRequest, userId)
@@ -165,7 +165,7 @@ class SpaceController(
     )
     fun deleteSpaces(
         @RequestParam spaceIds: List<String>,
-        @UserId userId: String
+        @RequestParam userId: String
     ): ResponseEntity<Void> {
         spaceUpdateService.deleteSpaces(spaceIds, userId)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()

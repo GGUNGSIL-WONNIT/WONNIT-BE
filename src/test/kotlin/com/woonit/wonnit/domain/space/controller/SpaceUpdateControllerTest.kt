@@ -98,13 +98,13 @@ class SpaceUpdateControllerTest : BaseControllerTest() {
     @Test
     fun `공간-등록`() {
         val user = User("user", PhoneNumber("010-0000-0000"))
-        ReflectionTestUtils.setField(user, "id", UUID.fromString(userId))
         userRepository.save(user)
 
         val request = createRequest()
         val requestJson = objectMapper.writeValueAsString(request)
 
         val result = mvcTester.post().uri("/api/v1/spaces")
+            .param("userId", user.id.toString())
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestJson)
             .exchange()
@@ -119,7 +119,6 @@ class SpaceUpdateControllerTest : BaseControllerTest() {
     @Test
      fun `공간-수정`() {
         val user = User("user", PhoneNumber("010-0000-0000"))
-        ReflectionTestUtils.setField(user, "id", UUID.fromString(userId))
         userRepository.save(user)
 
         val spaceId = createSpace(createRequest(), user.id)
@@ -130,6 +129,7 @@ class SpaceUpdateControllerTest : BaseControllerTest() {
         val requestJson = objectMapper.writeValueAsString(request)
 
         val result = mvcTester.put().uri("/api/v1/spaces/{spaceId}", spaceId)
+            .param("userId", user.id.toString())
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestJson)
             .exchange()
@@ -145,7 +145,6 @@ class SpaceUpdateControllerTest : BaseControllerTest() {
    @Test
     fun `공간-삭제`() {
        val user = User("user", PhoneNumber("010-0000-0000"))
-       ReflectionTestUtils.setField(user, "id", UUID.fromString(userId))
        userRepository.save(user)
 
        val spaceId1 = createSpace(createRequest(), user.id)
@@ -154,6 +153,7 @@ class SpaceUpdateControllerTest : BaseControllerTest() {
        entityManager.clear()
 
        val result = mvcTester.delete().uri("/api/v1/spaces")
+           .param("userId", user.id.toString())
            .queryParam("spaceIds", spaceId1.toString())
            .queryParam("spaceIds", spaceId2.toString())
            .exchange()

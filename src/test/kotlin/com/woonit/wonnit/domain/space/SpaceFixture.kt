@@ -11,7 +11,6 @@ object SpaceFixture {
 
     fun createUser(): User {
         val user = User("user", PhoneNumber("010-0000-0000"))
-        ReflectionTestUtils.setField(user, "id", UUID.fromString("028195e0-6999-137d-a747-0a02b343a12e"))
 
         return user
     }

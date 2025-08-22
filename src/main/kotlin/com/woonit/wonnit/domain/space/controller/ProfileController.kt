@@ -20,7 +20,7 @@ class ProfileController(
     @Operation(summary = "내가 등록한 공간 목록 조회", description = "내가 등록한 공간 목록을 조회합니다.")
     @GetMapping("/spaces")
     fun getMySpaces(
-        @UserId userId: String,
+        @RequestParam userId: String,
         @RequestParam("page", defaultValue = "0") page: Int,
     ): MySpacePageResponse {
         return spaceQueryService.getMySpaces(userId, page)
@@ -29,7 +29,7 @@ class ProfileController(
     @Operation(summary = "내가 대여한 공간 목록 조회", description = "내가 대여한 공간 목록을 조회합니다.")
     @GetMapping("/rental-spaces")
     fun getRentalSpaces(
-        @UserId userId: String,
+        @RequestParam userId: String,
         @RequestParam("page", defaultValue = "0") page: Int,
     ): MyRentalSpacePageResponse {
         return spaceQueryService.getMyRentalSpaces(userId, page)
