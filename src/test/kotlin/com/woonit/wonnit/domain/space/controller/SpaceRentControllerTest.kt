@@ -45,6 +45,9 @@ class SpaceRentControllerTest : BaseControllerTest() {
 
         // when
         space.rent(renter)
+        entityManager.flush()
+        entityManager.clear()
+
         val result = mvcTester.patch().uri("/api/v1/space/${space.id}/rentals/return-request")
             .param("userId", renter.id.toString())
             .exchange()
@@ -61,6 +64,9 @@ class SpaceRentControllerTest : BaseControllerTest() {
         // when
         space.rent(renter)
         space.returnRequest(renter)
+        entityManager.flush()
+        entityManager.clear()
+
         val result = mvcTester.patch().uri("/api/v1/space/${space.id}/rentals/return-reject")
             .param("userId", renter.id.toString())
             .exchange()
@@ -77,6 +83,9 @@ class SpaceRentControllerTest : BaseControllerTest() {
         // when
         space.rent(renter)
         space.returnRequest(renter)
+        entityManager.flush()
+        entityManager.clear()
+
         val result = mvcTester.patch().uri("/api/v1/space/${space.id}/rentals/return-approve")
             .param("userId", renter.id.toString())
             .exchange()
@@ -94,6 +103,9 @@ class SpaceRentControllerTest : BaseControllerTest() {
         space.rent(renter)
         space.returnRequest(renter)
         space.returnReject(renter)
+        entityManager.flush()
+        entityManager.clear()
+
         val result = mvcTester.patch().uri("/api/v1/space/${space.id}/rentals/return-approve")
             .param("userId", renter.id.toString())
             .exchange()
