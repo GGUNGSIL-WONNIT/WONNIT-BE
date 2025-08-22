@@ -1,4 +1,21 @@
 -- MySQL 데이터베이스용 INSERT ON DUPLICATE KEY UPDATE 구문 (UUID 포함)
+INSERT INTO users (id, name, phone_number, created_at, updated_at)
+VALUES (UNHEX(REPLACE('028195e0-6999-137d-a747-0a02b343a12e', '-', '')), 'tester1', '010-0000-0001', NOW(), NOW())
+    ON DUPLICATE KEY UPDATE name         = VALUES(name),
+    phone_number = VALUES(phone_number);
+
+INSERT INTO users (id, name, phone_number, created_at, updated_at)
+VALUES (UNHEX(REPLACE('128195e0-6999-137d-a747-0a02b343a12e', '-', '')), 'tester2', '010-0000-0002', NOW(), NOW())
+    ON DUPLICATE KEY UPDATE name         = VALUES(name),
+    phone_number = VALUES(phone_number);
+
+
+INSERT INTO users (id, name, phone_number, created_at, updated_at)
+VALUES (UNHEX(REPLACE('228195e0-6999-137d-a747-0a02b343a12e', '-', '')), 'tester3', '010-0000-0003', NOW(), NOW())
+    ON DUPLICATE KEY UPDATE name         = VALUES(name),
+    phone_number = VALUES(phone_number);
+
+
 INSERT INTO columns (id, title, subtitle, url, thumbnail_url, created_at, updated_at)
 VALUES (UNHEX(REPLACE('019195e0-6999-199b-a747-0a02b343a12e', '-', '')), '【익산칼럼】 삶이 예술이 되는 공간 유휴공간 문화재생',
         '유휴공간, 상상의 출발점', 'http://iksannews.com/default/index_view_page.php?part_idx=243&idx=47440',

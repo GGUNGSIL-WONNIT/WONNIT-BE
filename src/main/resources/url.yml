@@ -12,8 +12,8 @@ ai-server:
 spring.config.activate.on-profile: prod
 
 client:
-  url: http://localhost:5173
+  url: ${CLIENT_URL}
 server:
-  url: http://localhost:8080
+  url: ${SERVER_URL}
 ai-server:
   url: http://localhost:8001

@@ -6,5 +6,5 @@ spring:
       s3:
         bucket: wonnit
       credentials:
-        access-key: ${AWS_S3_ACCESSKEY}
-        secret-key: ${AWS_S3_SECRETKEY}
+        access-key: ${AWS_ACCESS_KEY_ID}
+        secret-key: ${AWS_SECRET_ACCESS_KEY}

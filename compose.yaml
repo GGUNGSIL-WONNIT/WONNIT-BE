@@ -17,6 +17,7 @@ services:
   app:
     image: maruhan/wonnit:latest
     container_name: wonnit-app
+    platform: linux/amd64
     env_file:
       - .env
     ports:
@@ -25,6 +26,7 @@ services:
       TZ: Asia/Seoul
     depends_on:
       - mysql
+    pull_policy: always
 
 volumes:
   mysql_data:
