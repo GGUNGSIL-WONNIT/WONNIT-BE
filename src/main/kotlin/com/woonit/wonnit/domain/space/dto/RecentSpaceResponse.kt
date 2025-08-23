@@ -13,6 +13,8 @@ data class RecentSpaceResponse(
     val category: SpaceCategory,
     @Schema(description = "공간 이름")
     val name: String,
+    @Schema(description = "메인 이미지 경로")
+    val mainImgUrl: String,
     @Schema(description = "주소 정보")
     val addressInfo: AddressInfo,
 ) {
@@ -22,6 +24,7 @@ data class RecentSpaceResponse(
                 spaceId = space.id.toString(),
                 category = space.spaceCategory,
                 name = space.name,
+                mainImgUrl = space.mainImgUrl,
                 addressInfo = space.addressInfo,
             )
         }
