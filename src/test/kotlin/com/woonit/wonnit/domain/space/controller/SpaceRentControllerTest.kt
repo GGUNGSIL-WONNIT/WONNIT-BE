@@ -3,12 +3,14 @@ package com.woonit.wonnit.domain.space.controller
 import com.woonit.wonnit.domain.share.PhoneNumber
 import com.woonit.wonnit.domain.space.Space
 import com.woonit.wonnit.domain.space.SpaceFixture
+import com.woonit.wonnit.domain.space.dto.ReturnSpaceRequest
 import com.woonit.wonnit.domain.user.User
 import com.woonit.wonnit.support.BaseControllerTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 
 class SpaceRentControllerTest : BaseControllerTest() {
 
@@ -42,6 +44,12 @@ class SpaceRentControllerTest : BaseControllerTest() {
     fun `공간 반납 요청을 한다`() {
         val renter = User("renter", PhoneNumber("010-0000-0001"))
         userRepository.save(renter)
+        val request = ReturnSpaceRequest(
+            beforeImgUrl = "https://wonnit.s3.ap-northeast-2.amazonaws.com/before.jpg",
+            afterImgUrl = "https://wonnit.s3.ap-northeast-2.amazonaws.com/after.jpg",
+            resultImgUrl = "https://wonnit.s3.ap-northeast-2.amazonaws.com/result.jpg",
+            similarity = 80.0
+        )
 
         // when
         space.rent(renter)
@@ -50,6 +58,8 @@ class SpaceRentControllerTest : BaseControllerTest() {
 
         val result = mvcTester.patch().uri("/api/v1/space/${space.id}/rentals/return-request")
             .param("userId", renter.id.toString())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request))
             .exchange()
 
         // then
@@ -60,10 +70,16 @@ class SpaceRentControllerTest : BaseControllerTest() {
     fun `공간 반납 요청을 거절한다`() {
         val renter = User("renter", PhoneNumber("010-0000-0001"))
         userRepository.save(renter)
+        val request = ReturnSpaceRequest(
+            beforeImgUrl = "https://wonnit.s3.ap-northeast-2.amazonaws.com/before.jpg",
+            afterImgUrl = "https://wonnit.s3.ap-northeast-2.amazonaws.com/after.jpg",
+            resultImgUrl = "https://wonnit.s3.ap-northeast-2.amazonaws.com/result.jpg",
+            similarity = 80.0
+        )
 
         // when
         space.rent(renter)
-        space.returnRequest(renter)
+        space.returnRequest(renter, request)
         entityManager.flush()
         entityManager.clear()
 
@@ -79,10 +95,16 @@ class SpaceRentControllerTest : BaseControllerTest() {
     fun `공간 반납 요청을 승인한다`() {
         val renter = User("renter", PhoneNumber("010-0000-0001"))
         userRepository.save(renter)
+        val request = ReturnSpaceRequest(
+            beforeImgUrl = "https://wonnit.s3.ap-northeast-2.amazonaws.com/before.jpg",
+            afterImgUrl = "https://wonnit.s3.ap-northeast-2.amazonaws.com/after.jpg",
+            resultImgUrl = "https://wonnit.s3.ap-northeast-2.amazonaws.com/result.jpg",
+            similarity = 80.0
+        )
 
         // when
         space.rent(renter)
-        space.returnRequest(renter)
+        space.returnRequest(renter, request)
         entityManager.flush()
         entityManager.clear()
 
@@ -98,10 +120,16 @@ class SpaceRentControllerTest : BaseControllerTest() {
     fun `반려된 공간에 대해 반납을 승인한다`() {
         val renter = User("renter", PhoneNumber("010-0000-0001"))
         userRepository.save(renter)
+        val request = ReturnSpaceRequest(
+            beforeImgUrl = "https://wonnit.s3.ap-northeast-2.amazonaws.com/before.jpg",
+            afterImgUrl = "https://wonnit.s3.ap-northeast-2.amazonaws.com/after.jpg",
+            resultImgUrl = "https://wonnit.s3.ap-northeast-2.amazonaws.com/result.jpg",
+            similarity = 80.0
+        )
 
         // when
         space.rent(renter)
-        space.returnRequest(renter)
+        space.returnRequest(renter, request)
         space.returnReject(renter)
         entityManager.flush()
         entityManager.clear()

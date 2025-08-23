@@ -4,6 +4,7 @@ import com.woonit.wonnit.domain.share.AddressInfo
 import com.woonit.wonnit.domain.share.AmountInfo
 import com.woonit.wonnit.domain.share.OperationalInfo
 import com.woonit.wonnit.domain.share.PhoneNumber
+import com.woonit.wonnit.domain.space.dto.ReturnSpaceRequest
 import com.woonit.wonnit.domain.user.User
 import com.woonit.wonnit.global.entity.BaseEntity
 import jakarta.persistence.*
@@ -27,6 +28,10 @@ class Space(
     precautions: String?,
     tags: MutableList<String>,
     user: User,
+    beforeImgUrl: String?,
+    afterImgUrl: String?,
+    resultImgUrl: String?,
+    similarity: Double?,
 ) : BaseEntity() {
 
     @Column(length = 255, nullable = false)
@@ -106,6 +111,18 @@ class Space(
     @JoinColumn(name = "renter_id")
     var renter: User? = null
 
+    var beforeImgUrl: String? = beforeImgUrl
+        protected set
+
+    var afterImgUrl: String? = afterImgUrl
+        protected set
+
+    var resultImgUrl: String? = resultImgUrl
+        protected set
+
+    var similarity: Double? = similarity
+        protected set
+
     init {
         require(subImgUrls.isNotEmpty()) { "추가 사진은 비어있을 수 없습니다" }
     }
@@ -140,7 +157,11 @@ class Space(
             user = user,
             phoneNumber = phoneNumber,
             precautions = precautions,
-            tags = tags
+            tags = tags,
+            beforeImgUrl = null,
+            afterImgUrl = null,
+            resultImgUrl = null,
+            similarity = null
         )
     }
 
@@ -180,10 +201,15 @@ class Space(
         this.spaceStatus = SpaceStatus.OCCUPIED
     }
 
-    fun returnRequest(renter: User) {
+    fun returnRequest(renter: User, request: ReturnSpaceRequest) {
         require(this.spaceStatus == SpaceStatus.OCCUPIED) { "공간이 대여 중이 아닙니다" }
         require(this.renter == renter) { "반납 요청 유저가 대여 중인 유저와 일치하지 않습니다" }
         this.spaceStatus = SpaceStatus.RETURN_REQUEST
+
+        this.beforeImgUrl = request.beforeImgUrl
+        this.afterImgUrl = request.afterImgUrl
+        this.resultImgUrl = request.resultImgUrl
+        this.similarity = request.similarity
     }
 
     fun returnReject(renter: User) {

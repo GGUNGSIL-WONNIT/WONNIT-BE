@@ -1,5 +1,6 @@
 package com.woonit.wonnit.domain.space.controller
 
+import com.woonit.wonnit.domain.space.dto.ReturnSpaceRequest
 import com.woonit.wonnit.domain.space.service.SpaceRentService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -28,8 +29,9 @@ class SpaceRentController(
     fun returnRequest(
         @RequestParam userId: String,
         @PathVariable spaceId: String,
+        @RequestBody request: ReturnSpaceRequest
     ) {
-        spaceRentService.returnRequest(userId, spaceId)
+        spaceRentService.returnRequest(userId, spaceId, request)
     }
 
     @Operation(summary = "공간 반납 거절", description = "공간 반납을 거절합니다.")

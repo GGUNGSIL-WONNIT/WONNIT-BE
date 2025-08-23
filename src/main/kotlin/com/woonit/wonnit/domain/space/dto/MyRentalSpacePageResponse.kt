@@ -36,7 +36,15 @@ data class MyRentalSpaceResponse(
     @Schema(description = "가격 정보")
     val amountInfo: AmountInfo,
     @Schema(description = "공간 상태")
-    val status: SpaceStatus
+    val status: SpaceStatus,
+    @Schema(description = "사용 전 이미지")
+    val beforeImgUrl: String?,
+    @Schema(description = "사용 후 이미지")
+    val afterImgUrl: String?,
+    @Schema(description = "비교 분석 결과 이미지")
+    val resultImgUrl: String?,
+    @Schema(description = "비교 분석 결과 퍼센티지")
+    val similarity: Double?,
 ) {
     companion object {
         fun from(space: Space): MyRentalSpaceResponse {
@@ -47,7 +55,11 @@ data class MyRentalSpaceResponse(
                 addressInfo = space.addressInfo,
                 mainImgUrl = space.mainImgUrl,
                 amountInfo = space.amountInfo,
-                status = space.spaceStatus
+                status = space.spaceStatus,
+                beforeImgUrl = space.beforeImgUrl,
+                afterImgUrl = space.afterImgUrl,
+                resultImgUrl = space.resultImgUrl,
+                similarity = space.similarity
             )
         }
     }

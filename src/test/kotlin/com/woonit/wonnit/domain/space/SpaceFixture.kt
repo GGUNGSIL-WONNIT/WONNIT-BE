@@ -49,7 +49,11 @@ object SpaceFixture {
             precautions = precautions,
             tags = tags,
             user = owner,
-            modelThumbnailUrl = modelThumbnailUrl
+            modelThumbnailUrl = modelThumbnailUrl,
+            beforeImgUrl = null,
+            afterImgUrl = null,
+            resultImgUrl = null,
+            similarity = null
         )
     }
 }

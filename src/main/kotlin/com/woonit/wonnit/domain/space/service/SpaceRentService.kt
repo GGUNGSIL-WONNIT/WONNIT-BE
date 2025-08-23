@@ -1,6 +1,7 @@
 package com.woonit.wonnit.domain.space.service
 
 import com.woonit.wonnit.domain.space.Space
+import com.woonit.wonnit.domain.space.dto.ReturnSpaceRequest
 import com.woonit.wonnit.domain.space.repository.SpaceRepository
 import com.woonit.wonnit.domain.user.User
 import com.woonit.wonnit.domain.user.repository.UserRepository
@@ -22,10 +23,10 @@ class SpaceRentService(
         space.rent(renter)
     }
 
-    fun returnRequest(userId: String, spaceId: String) {
+    fun returnRequest(userId: String, spaceId: String, request: ReturnSpaceRequest) {
         val space = getSpace(spaceId)
         val renter = getUser(userId)
-        space.returnRequest(renter)
+        space.returnRequest(renter, request)
     }
 
     fun returnReject(userId: String, spaceId: String) {
