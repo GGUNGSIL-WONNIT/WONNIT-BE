@@ -5,6 +5,8 @@ import com.woonit.wonnit.domain.space.dto.ReturnSpaceRequest
 import com.woonit.wonnit.domain.space.repository.SpaceRepository
 import com.woonit.wonnit.domain.user.User
 import com.woonit.wonnit.domain.user.repository.UserRepository
+import com.woonit.wonnit.global.exception.business.ForbiddenException
+import com.woonit.wonnit.global.exception.code.SpaceErrorCode
 import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -29,16 +31,28 @@ class SpaceRentService(
         space.returnRequest(renter, request)
     }
 
-    fun returnReject(userId: String, spaceId: String) {
+    fun returnReject(ownerId: String, spaceId: String) {
         val space = getSpace(spaceId)
-        val renter = getUser(userId)
-        space.returnReject(renter)
+        if (space.user.id.toString() != ownerId) {
+            throw ForbiddenException(SpaceErrorCode.NO_OWNER)
+        }
+        space.returnReject()
     }
 
-    fun returnApprove(userId: String, spaceId: String) {
+    fun returnApprove(ownerId: String, spaceId: String) {
         val space = getSpace(spaceId)
-        val renter = getUser(userId)
-        space.returnApprove(renter)
+        if (space.user.id.toString() != ownerId) {
+            throw ForbiddenException(SpaceErrorCode.NO_OWNER)
+        }
+        space.returnApprove()
+    }
+
+    fun reRegistration(ownerId: String, spaceId: String) {
+        val space = getSpace(spaceId)
+        if (space.user.id.toString() != ownerId) {
+            throw ForbiddenException(SpaceErrorCode.NO_OWNER)
+        }
+        space.reRegistration()
     }
 
     private fun getUser(userId: String): User = (userRepository.findByIdOrNull(UUID.fromString(userId))

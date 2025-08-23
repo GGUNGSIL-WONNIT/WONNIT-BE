@@ -1,11 +1,10 @@
 package com.woonit.wonnit.domain.space
 
 import com.woonit.wonnit.domain.share.*
+import com.woonit.wonnit.domain.space.dto.ReturnSpaceRequest
 import com.woonit.wonnit.domain.user.User
-import org.springframework.test.util.ReflectionTestUtils
 import java.time.DayOfWeek
 import java.time.LocalDateTime
-import java.util.*
 
 object SpaceFixture {
 
@@ -54,6 +53,15 @@ object SpaceFixture {
             afterImgUrl = null,
             resultImgUrl = null,
             similarity = null
+        )
+    }
+
+    fun createReturnSpaceRequest(similarity: Double = 80.0): ReturnSpaceRequest {
+        return ReturnSpaceRequest(
+            beforeImgUrl = "https://wonnit.s3.ap-northeast-2.amazonaws.com/before.jpg",
+            afterImgUrl = "https://wonnit.s3.ap-northeast-2.amazonaws.com/after.jpg",
+            resultImgUrl = "https://wonnit.s3.ap-northeast-2.amazonaws.com/result.jpg",
+            similarity = similarity
         )
     }
 }

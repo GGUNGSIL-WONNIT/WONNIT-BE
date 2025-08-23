@@ -204,6 +204,7 @@ class Space(
     fun returnRequest(renter: User, request: ReturnSpaceRequest) {
         require(this.spaceStatus == SpaceStatus.OCCUPIED) { "공간이 대여 중이 아닙니다" }
         require(this.renter == renter) { "반납 요청 유저가 대여 중인 유저와 일치하지 않습니다" }
+        require(request.similarity >= 80) { "유사도가 80% 이상이어야 합니다" }
         this.spaceStatus = SpaceStatus.RETURN_REQUEST
 
         this.beforeImgUrl = request.beforeImgUrl
@@ -212,15 +213,19 @@ class Space(
         this.similarity = request.similarity
     }
 
-    fun returnReject(renter: User) {
+    fun returnReject() {
         require(this.spaceStatus == SpaceStatus.RETURN_REQUEST) { "반납 요청 상태의 공간이 아닙니다" }
-        require(this.renter == renter) { "반납 요청 유저가 대여 중인 유저와 일치하지 않습니다" }
         this.spaceStatus = SpaceStatus.RETURN_REJECTED
     }
 
-    fun returnApprove(renter: User) {
+    fun returnApprove() {
         require(this.spaceStatus == SpaceStatus.RETURN_REQUEST || this.spaceStatus == SpaceStatus.RETURN_REJECTED) { "반납 요청 또는 반납 반려 상태의 공간이 아닙니다" }
-        require(this.renter == renter) { "반납 요청 유저가 대여 중인 유저와 일치하지 않습니다" }
+        this.spaceStatus = SpaceStatus.AVAILABLE
+        this.renter = null
+    }
+
+    fun reRegistration() {
+        require(this.spaceStatus == SpaceStatus.RETURN_REJECTED) { "반납 반려 상태의 공간이 아닙니다" }
         this.spaceStatus = SpaceStatus.AVAILABLE
         this.renter = null
     }

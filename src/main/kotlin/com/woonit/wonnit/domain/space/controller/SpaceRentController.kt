@@ -82,4 +82,21 @@ class SpaceRentController(
     ) {
         spaceRentService.returnApprove(userId, spaceId)
     }
+
+    @Operation(summary = "공간 재등록하기", description = "반납 반려되었던 공간을 재등록합니다. 공간의 소유주만 가능합니다.")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "204", description = "No Content"),
+            ApiResponse(responseCode = "403", description = "Access Denied"),
+            ApiResponse(responseCode = "404", description = "User or Space Not Found")
+        ]
+    )
+    @PatchMapping("/re-registration")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun reRegistration(
+        @Parameter(description = "소유주 ID", required = true) @RequestParam userId: String,
+        @Parameter(description = "재등록할(반납 반려되었던) 공간 ID", required = true) @PathVariable spaceId: String,
+    ) {
+        spaceRentService.reRegistration(userId, spaceId)
+    }
 }

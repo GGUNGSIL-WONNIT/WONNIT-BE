@@ -24,9 +24,17 @@ enum class SpaceErrorCode(
         "https://api.wonnit.com/errors/space/invalid-size"
     ),
 
+    /* FORBIDDEN */
+    NO_OWNER(
+        "Space_003",
+        "공간 소유주가 아닙니다.",
+        HttpStatus.FORBIDDEN,
+        "https://api.wonnit.com/errors/space/no-owner"
+    ),
+
     /* NOT FOUND 404 */
     NOT_FOUND(
-        "Space_003",
+        "Space_004",
         "공간을 찾을 수 없습니다.",
         HttpStatus.NOT_FOUND,
         "https://api.wonnit.com/errors/space/not-found"
