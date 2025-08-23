@@ -64,6 +64,23 @@ class GlobalExceptionHandler(
         return ResponseEntity.badRequest().body(problemDetail)
     }
 
+    @ExceptionHandler(IllegalArgumentException::class, IllegalStateException::class)
+    fun handleIllegalArgumentException(
+        exception: Exception,
+        request: HttpServletRequest
+    ): ResponseEntity<ProblemDetail> {
+        val badRequestException = BadRequestException(CommonErrorCode.INVALID_INPUT, exception.message!!)
+        loggingStrategy.log(badRequestException, request)
+
+        val problemDetail = ProblemDetailBuilder.from(badRequestException, request)
+
+        if (badRequestException.hasFieldErrors()) {
+            problemDetail.setProperty("validationFailed", true)
+        }
+
+        return ResponseEntity.badRequest().body(problemDetail)
+    }
+
     // ========== 2. 시스템 예외 처리 (5xx) ==========
     @ExceptionHandler(ServerException::class)
     fun handleSystemException(

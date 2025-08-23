@@ -23,7 +23,11 @@ class ProblemDetailBuilder {
             }
         }
 
-        fun from(errorCode: ErrorCode, request: HttpServletRequest, properties: Map<String, Any> = emptyMap()): ProblemDetail {
+        fun from(
+            errorCode: ErrorCode,
+            request: HttpServletRequest,
+            properties: Map<String, Any> = emptyMap()
+        ): ProblemDetail {
             return errorCode.toProblemDetail(properties).apply {
                 instance = URI.create(request.requestURI)
                 setProperty("timestamp", Instant.now())
@@ -38,6 +42,7 @@ class ProblemDetailBuilder {
                         problemDetail.setProperty("fieldErrors", exception.getFieldErrors())
                     }
                 }
+
                 is UnauthorizedException -> {
                     exception.getAuthenticationReason()?.let {
                         problemDetail.setProperty("authReason", it)
@@ -46,6 +51,7 @@ class ProblemDetailBuilder {
                         problemDetail.setProperty("tokenType", it)
                     }
                 }
+
                 is ForbiddenException -> {
                     exception.getResource()?.let {
                         problemDetail.setProperty("resource", it)
@@ -54,6 +60,7 @@ class ProblemDetailBuilder {
                         problemDetail.setProperty("action", it)
                     }
                 }
+
                 is NotFoundException -> {
                     exception.getResourceType()?.let {
                         problemDetail.setProperty("resourceType", it)
@@ -62,6 +69,7 @@ class ProblemDetailBuilder {
                         problemDetail.setProperty("resourceId", it)
                     }
                 }
+
                 is ConflictException -> {
                     exception.getConflictResource()?.let {
                         problemDetail.setProperty("conflictResource", it)
@@ -73,6 +81,7 @@ class ProblemDetailBuilder {
                         problemDetail.setProperty("requestedState", it)
                     }
                 }
+
                 is InternalServerException -> {
                     exception.getTraceId()?.let {
                         problemDetail.setProperty("traceId", it)
@@ -81,6 +90,7 @@ class ProblemDetailBuilder {
                         problemDetail.setProperty("component", it)
                     }
                 }
+
                 is BadGatewayException -> {
                     exception.getServiceName()?.let {
                         problemDetail.setProperty("serviceName", it)
@@ -89,6 +99,7 @@ class ProblemDetailBuilder {
                         problemDetail.setProperty("endpoint", it)
                     }
                 }
+
                 is GatewayTimeoutException -> {
                     exception.getServiceName()?.let {
                         problemDetail.setProperty("serviceName", it)
