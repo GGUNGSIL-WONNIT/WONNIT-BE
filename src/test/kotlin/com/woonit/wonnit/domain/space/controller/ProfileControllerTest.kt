@@ -9,7 +9,6 @@ import com.woonit.wonnit.domain.user.User
 import com.woonit.wonnit.support.BaseControllerTest
 import org.assertj.core.api.AssertionsForInterfaceTypes.assertThat
 import org.junit.jupiter.api.Test
-import java.util.UUID
 
 class ProfileControllerTest : BaseControllerTest() {
 
