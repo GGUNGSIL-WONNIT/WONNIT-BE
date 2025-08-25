@@ -5,6 +5,7 @@ import com.woonit.wonnit.domain.space.dto.ReturnSpaceRequest
 import com.woonit.wonnit.domain.space.repository.SpaceRepository
 import com.woonit.wonnit.domain.user.User
 import com.woonit.wonnit.domain.user.repository.UserRepository
+import com.woonit.wonnit.global.config.logger
 import com.woonit.wonnit.global.exception.business.ForbiddenException
 import com.woonit.wonnit.global.exception.code.SpaceErrorCode
 import jakarta.transaction.Transactional
@@ -27,6 +28,7 @@ class SpaceRentService(
      * @throws NoSuchElementException if the user or space is not found.
      */
     fun rent(userId: String, spaceId: String) {
+        logger<SpaceRentService>().info("Rent for spaceId: $spaceId, userId: $userId")
         val space = getSpace(spaceId)
         val renter = getUser(userId)
         space.rent(renter)
@@ -41,6 +43,7 @@ class SpaceRentService(
      * @throws NoSuchElementException if the user or space is not found.
      */
     fun returnRequest(userId: String, spaceId: String, request: ReturnSpaceRequest) {
+        logger<SpaceRentService>().info("Return request spaceId: $spaceId, userId: $userId")
         val space = getSpace(spaceId)
         val renter = getUser(userId)
         space.returnRequest(renter, request)
@@ -55,6 +58,7 @@ class SpaceRentService(
      * @throws NoSuchElementException if the space is not found.
      */
     fun returnReject(ownerId: String, spaceId: String) {
+        logger<SpaceRentService>().info("Return Reject spaceId: $spaceId, ownerId: $ownerId")
         val space = getSpace(spaceId)
         checkIsOwner(space.user.id, ownerId)
         space.returnReject()
@@ -69,6 +73,7 @@ class SpaceRentService(
      * @throws NoSuchElementException if the space is not found.
      */
     fun returnApprove(ownerId: String, spaceId: String) {
+        logger<SpaceRentService>().info("Return Approve spaceId: $spaceId, ownerId: $ownerId")
         val space = getSpace(spaceId)
         checkIsOwner(space.user.id, ownerId)
         space.returnApprove()
@@ -83,6 +88,7 @@ class SpaceRentService(
      * @throws NoSuchElementException if the space is not found.
      */
     fun reRegistration(ownerId: String, spaceId: String) {
+        logger<SpaceRentService>().info("Re-Registration spaceId: $spaceId, ownerId: $ownerId")
         val space = getSpace(spaceId)
         checkIsOwner(space.user.id, ownerId)
         space.reRegistration()

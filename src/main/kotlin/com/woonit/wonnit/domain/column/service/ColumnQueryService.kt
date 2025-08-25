@@ -2,6 +2,7 @@ package com.woonit.wonnit.domain.column.service
 
 import com.woonit.wonnit.domain.column.dto.ColumnResponse
 import com.woonit.wonnit.domain.column.repository.ColumnRepository
+import com.woonit.wonnit.global.config.logger
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -16,6 +17,7 @@ class ColumnQueryService(
      * @return A list of [ColumnResponse] objects.
      */
     fun getMainColumns(): List<ColumnResponse> {
+        logger<ColumnQueryService>().info("Get Main Columns")
         val columns = columnRepository.findTop3()
         return columns.map { ColumnResponse.from(it) }
     }

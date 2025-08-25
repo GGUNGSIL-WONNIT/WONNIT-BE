@@ -2,6 +2,7 @@ package com.woonit.wonnit.domain.space.service
 
 import com.woonit.wonnit.domain.space.dto.*
 import com.woonit.wonnit.domain.space.repository.SpaceQueryRepository
+import com.woonit.wonnit.global.config.logger
 import com.woonit.wonnit.global.exception.business.NotFoundException
 import com.woonit.wonnit.global.exception.code.SpaceErrorCode
 import org.springframework.stereotype.Service
@@ -20,8 +21,9 @@ class SpaceQueryService(
      * @return A [SpaceDetailResponse] containing the full details of the space.
      * @throws NotFoundException if the space with the given ID is not found.
      */
-    fun getSpaceDetail(spaceId: UUID): SpaceDetailResponse {
-        val space = spaceQueryRepository.findSpace(spaceId)
+    fun getSpaceDetail(spaceId: String): SpaceDetailResponse {
+        logger<SpaceQueryService>().info("Get Space Detail for space: $spaceId")
+        val space = spaceQueryRepository.findSpace(UUID.fromString(spaceId))
             ?: throw NotFoundException(SpaceErrorCode.NOT_FOUND)
         val subImageUrls = spaceQueryRepository.findSubImageUrls(space.id)
         val tags = spaceQueryRepository.findTags(space.id)
@@ -37,6 +39,7 @@ class SpaceQueryService(
      * @return A [MySpacePageResponse] containing the list of spaces and pagination information.
      */
     fun getMySpaces(userId: String, page: Int): MySpacePageResponse {
+        logger<SpaceQueryService>().info("Get MySpaces for user: $userId, page: $page")
         val spaces = spaceQueryRepository.findMySpaces(userId, page)
         val totalCount = spaceQueryRepository.countMySpaces(userId)
         return MySpacePageResponse.of(
@@ -53,6 +56,7 @@ class SpaceQueryService(
      * @return A [MyRentalSpacePageResponse] containing the list of rented spaces and pagination information.
      */
     fun getMyRentalSpaces(userId: String, page: Int): MyRentalSpacePageResponse {
+        logger<SpaceQueryService>().info("Get MyRentalSpaces for user: $userId, page: $page")
         val rentalSpaces = spaceQueryRepository.findMyRentalSpaces(userId, page)
         val totalCount = spaceQueryRepository.countMyRentalSpaces(userId)
         return MyRentalSpacePageResponse.of(
@@ -67,6 +71,7 @@ class SpaceQueryService(
      * @return A list of [RecentSpaceResponse] objects.
      */
     fun getRecentSpaces(): List<RecentSpaceResponse> {
+        logger<SpaceQueryService>().info("Get RecentSpaces")
         return spaceQueryRepository.findRecentSpaces()
             .map { RecentSpaceResponse.from(it) }
     }
@@ -79,6 +84,7 @@ class SpaceQueryService(
      * @return A list of [SpaceSearchResponse] objects.
      */
     fun getNearBySpaces(lat: Double, lon: Double): List<SpaceSearchResponse> {
+        logger<SpaceQueryService>().info("Get Nearby Spaces - lat: $lat, lon: $lon")
         return spaceQueryRepository.findNearBySpaces(lat, lon)
             .map { SpaceSearchResponse.from(it) }
     }

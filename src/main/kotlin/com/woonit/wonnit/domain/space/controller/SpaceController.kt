@@ -188,7 +188,7 @@ class SpaceController(
         @Parameter(
             description = "조회할 공간의 ID",
             required = true
-        ) @PathVariable spaceId: UUID
+        ) @PathVariable spaceId: String
     ): ResponseEntity<SpaceDetailResponse> {
         val response = spaceQueryService.getSpaceDetail(spaceId)
         return ResponseEntity.ok(response)

@@ -1,6 +1,7 @@
 package com.woonit.wonnit.domain.space.service
 
 import com.woonit.wonnit.domain.space.dto.PresignUploadResponse
+import com.woonit.wonnit.global.config.logger
 import com.woonit.wonnit.infra.s3.S3PresignService
 import com.woonit.wonnit.infra.s3.S3Uploader
 import org.springframework.stereotype.Service
@@ -18,8 +19,11 @@ class SpaceImageService(
      * @return A [PresignUploadResponse] containing the pre-signed URL and the file key.
      */
     fun getPresignedUrlForImage(fileName: String): PresignUploadResponse {
+        logger<SpaceImageService>().info("Get Presigned Url for image: $fileName")
         return s3PresignService.createUploadUrl(fileName)
     }
 
-    fun deleteImage(key: String) { s3Uploader.deleteFile(key) }
+    fun deleteImage(key: String) {
+        s3Uploader.deleteFile(key)
+    }
 }

@@ -4,6 +4,7 @@ import com.woonit.wonnit.domain.space.Space
 import com.woonit.wonnit.domain.space.dto.SpaceSaveRequest
 import com.woonit.wonnit.domain.space.repository.SpaceRepository
 import com.woonit.wonnit.domain.user.repository.UserRepository
+import com.woonit.wonnit.global.config.logger
 import com.woonit.wonnit.global.exception.business.ForbiddenException
 import com.woonit.wonnit.global.exception.business.NotFoundException
 import com.woonit.wonnit.global.exception.code.CommonErrorCode
@@ -29,6 +30,7 @@ class SpaceCommandService(
      */
     @Transactional
     fun createSpace(request: SpaceSaveRequest, userId: String) {
+        logger<SpaceCommandService>().info("Create Space By User: $userId")
         val user = userRepository.findByIdOrNull(UUID.fromString(userId))
             ?: throw NotFoundException(UserErrorCode.NOT_FOUND)
 
@@ -48,6 +50,7 @@ class SpaceCommandService(
      */
     @Transactional
     fun updateSpace(spaceId: String, request: SpaceSaveRequest, userId: String) {
+        logger<SpaceCommandService>().info("Update Space($spaceId) By User: $userId")
         val space = getSpace(spaceId)
 
         checkIsOwner(space.user.id, userId, spaceId)
@@ -65,6 +68,7 @@ class SpaceCommandService(
      */
     @Transactional
     fun deleteSpaces(spaceIds: List<String>, userId: String) {
+        logger<SpaceCommandService>().info("Delete Spaces($spaceIds) By User: $userId")
         spaceIds.forEach { spaceId ->
             val space = getSpace(spaceId)
 
