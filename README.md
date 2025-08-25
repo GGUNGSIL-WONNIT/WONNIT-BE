@@ -182,7 +182,7 @@ Embeddables
 
 ## ⌛️ How to Run
 1.	clean build
-2.	docker buildx build –platform linux/amd64 -t maruhan/wonnit:latest .
+2.	docker buildx build --platform linux/amd64 -t maruhan/wonnit:latest .
 3.	docker push maruhan/wonnit:latest
 4.	Connect to EC2 and run docker-compose up -d
 -	Requires compose.yaml and .env file

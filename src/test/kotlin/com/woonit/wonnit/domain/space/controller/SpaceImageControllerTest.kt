@@ -1,31 +1,21 @@
 package com.woonit.wonnit.domain.space.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.woonit.wonnit.domain.space.dto.PresignUploadResponse
 import com.woonit.wonnit.domain.space.service.SpaceImageService
+import com.woonit.wonnit.support.BaseControllerTest
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.verify
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.context.bean.override.mockito.MockitoBean
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 
-@WebMvcTest(SpaceImageController::class)
-class SpaceImageControllerTest {
-
-    @Autowired
-    private lateinit var mockMvc: MockMvc
-
-    @Autowired
-    private lateinit var objectMapper: ObjectMapper
+class SpaceImageControllerTest : BaseControllerTest() {
 
     @MockitoBean
     private lateinit var spaceImageService: SpaceImageService
@@ -46,16 +36,17 @@ class SpaceImageControllerTest {
             given(spaceImageService.getPresignedUrlForImage(imageName)).willReturn(mockResponse)
 
             // when & then
-            mockMvc.perform(
-                post("/api/v1/images")
-                    .param("imageName", imageName)
-                    .accept(MediaType.APPLICATION_JSON)
-            )
-                .andExpect(status().isOk)
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.uploadUrl").value(presignedUrl))
-                .andExpect(jsonPath("$.url").value(key))
+            val result = mvcTester.post().uri("/api/v1/images")
+                .param("imageName", imageName)
+                .contentType(MediaType.APPLICATION_JSON)
+                .exchange()
 
+            assertThat(result).hasStatusOk()
+
+            val response: PresignUploadResponse = objectMapper.readValue(result.response.contentAsString)
+
+            assertThat(response.uploadUrl).isEqualTo(presignedUrl)
+            assertThat(response.url).isEqualTo(key)
             verify(spaceImageService).getPresignedUrlForImage(imageName)
         }
     }
@@ -72,12 +63,12 @@ class SpaceImageControllerTest {
             given(spaceImageService.deleteImage(imageKey)).willAnswer { /* do nothing */ }
 
             // when & then
-            mockMvc.perform(
-                delete("/api/v1/images")
-                    .param("imageKey", imageKey)
-            )
-                .andExpect(status().isNoContent)
+            val result = mvcTester.delete().uri("/api/v1/images")
+                .param("imageKey", imageKey)
+                .exchange()
+            result
 
+            assertThat(result).hasStatus(HttpStatus.NO_CONTENT)
             verify(spaceImageService).deleteImage(imageKey)
         }
     }
