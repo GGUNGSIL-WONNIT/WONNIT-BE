@@ -1,0 +1,19 @@
+spring.config.activate.on-profile: dev
+
+client:
+  url: http://localhost:5173
+server:
+  url: http://localhost:8080
+ai-server:
+  url: http://localhost:8001
+
+---
+
+spring.config.activate.on-profile: prod
+
+client:
+  url: ${CLIENT_URL}
+server:
+  url: ${SERVER_URL}
+ai-server:
+  url: http://localhost:8001

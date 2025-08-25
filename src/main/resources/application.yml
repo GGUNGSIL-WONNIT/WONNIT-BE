@@ -1,0 +1,12 @@
+spring.application.name: wonnit
+spring.profiles.active: dev
+
+spring:
+  docker:
+    compose:
+      lifecycle-management: start_only
+  config:
+    import:
+      - db.yml
+      - url.yml
+      - aws.yml
