@@ -17,10 +17,17 @@ import java.util.*
 
 @Service
 class SpaceUpdateService(
-    val spaceRepository: SpaceRepository,
-    val userRepository: UserRepository
+    private val spaceRepository: SpaceRepository,
+    private val userRepository: UserRepository,
 ) {
 
+    /**
+     * Creates and persists a new space based on the provided request data.
+     *
+     * @param request The request object containing the details of the space to be created.
+     * @param userId The ID of the user creating the space.
+     * @throws NotFoundException if the user with the given userId is not found.
+     */
     @Transactional
     fun createSpace(request: SpaceSaveRequest, userId: String) {
         val user = userRepository.findByIdOrNull(UUID.fromString(userId))
@@ -40,12 +47,21 @@ class SpaceUpdateService(
             precautions = request.precautions,
             user = user,
             phoneNumber = PhoneNumber(request.phoneNumber),
-            tags = request.tags
+            tags = request.tags,
         )
 
         spaceRepository.save(space)
     }
 
+    /**
+     * Updates an existing space with the provided data.
+     *
+     * @param spaceId The ID of the space to update.
+     * @param request The request object containing the new details for the space.
+     * @param userId The ID of the user attempting to update the space.
+     * @throws NotFoundException if the space with the given spaceId is not found.
+     * @throws ForbiddenException if the user is not the owner of the space.
+     */
     @Transactional
     fun updateSpace(spaceId: String, request: SpaceSaveRequest, userId: String) {
         val space = spaceRepository.findByIdOrNull(UUID.fromString(spaceId))
@@ -68,10 +84,18 @@ class SpaceUpdateService(
             modelThumbnailUrl = request.modelThumbnailUrl,
             phoneNumber = PhoneNumber(request.phoneNumber),
             precautions = request.precautions,
-            tags = request.tags
+            tags = request.tags,
         )
     }
 
+    /**
+     * Deletes a list of spaces.
+     *
+     * @param spaceIds A list of space IDs to be deleted.
+     * @param userId The ID of the user attempting to delete the spaces.
+     * @throws NotFoundException if a space with one of the given spaceIds is not found.
+     * @throws ForbiddenException if the user is not the owner of a space.
+     */
     @Transactional
     fun deleteSpaces(spaceIds: List<String>, userId: String) {
         spaceIds.forEach { spaceId ->

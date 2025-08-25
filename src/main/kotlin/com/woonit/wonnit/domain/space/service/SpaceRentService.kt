@@ -15,22 +15,45 @@ import java.util.*
 @Service
 @Transactional
 class SpaceRentService(
-    val spaceRepository: SpaceRepository,
-    val userRepository: UserRepository,
+    private val spaceRepository: SpaceRepository,
+    private val userRepository: UserRepository,
 ) {
 
+    /**
+     * Rents a space to a user.
+     *
+     * @param userId The ID of the user who wants to rent the space.
+     * @param spaceId The ID of the space to be rented.
+     * @throws NoSuchElementException if the user or space is not found.
+     */
     fun rent(userId: String, spaceId: String) {
         val space = getSpace(spaceId)
         val renter = getUser(userId)
         space.rent(renter)
     }
 
+    /**
+     * Submits a return request for a rented space.
+     *
+     * @param userId The ID of the user (renter) submitting the return request.
+     * @param spaceId The ID of the space to be returned.
+     * @param request The request object containing details for the return.
+     * @throws NoSuchElementException if the user or space is not found.
+     */
     fun returnRequest(userId: String, spaceId: String, request: ReturnSpaceRequest) {
         val space = getSpace(spaceId)
         val renter = getUser(userId)
         space.returnRequest(renter, request)
     }
 
+    /**
+     * Rejects a return request for a space.
+     *
+     * @param ownerId The ID of the space owner.
+     * @param spaceId The ID of the space.
+     * @throws ForbiddenException if the user is not the owner of the space.
+     * @throws NoSuchElementException if the space is not found.
+     */
     fun returnReject(ownerId: String, spaceId: String) {
         val space = getSpace(spaceId)
         if (space.user.id.toString() != ownerId) {
@@ -39,6 +62,14 @@ class SpaceRentService(
         space.returnReject()
     }
 
+    /**
+     * Approves a return request for a space.
+     *
+     * @param ownerId The ID of the space owner.
+     * @param spaceId The ID of the space.
+     * @throws ForbiddenException if the user is not the owner of the space.
+     * @throws NoSuchElementException if the space is not found.
+     */
     fun returnApprove(ownerId: String, spaceId: String) {
         val space = getSpace(spaceId)
         if (space.user.id.toString() != ownerId) {
@@ -47,6 +78,14 @@ class SpaceRentService(
         space.returnApprove()
     }
 
+    /**
+     * Re-registers a returned space, making it available for rent again.
+     *
+     * @param ownerId The ID of the space owner.
+     * @param spaceId The ID of the space.
+     * @throws ForbiddenException if the user is not the owner of the space.
+     * @throws NoSuchElementException if the space is not found.
+     */
     fun reRegistration(ownerId: String, spaceId: String) {
         val space = getSpace(spaceId)
         if (space.user.id.toString() != ownerId) {
@@ -56,8 +95,8 @@ class SpaceRentService(
     }
 
     private fun getUser(userId: String): User = (userRepository.findByIdOrNull(UUID.fromString(userId))
-        ?: throw NoSuchElementException("유저 정보를 찾을 수 없습니다"))
+        ?: throw NoSuchElementException("User not found with ID: $userId"))
 
     private fun getSpace(spaceId: String): Space = spaceRepository.findByIdOrNull(UUID.fromString(spaceId))
-        ?: throw NoSuchElementException("공간 정보를 찾을 수 없습니다")
+        ?: throw NoSuchElementException("Space not found with ID: $spaceId")
 }

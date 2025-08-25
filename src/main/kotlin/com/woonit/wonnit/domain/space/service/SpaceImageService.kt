@@ -11,7 +11,13 @@ class SpaceImageService(
     private val s3Uploader: S3Uploader
 ) {
 
-    fun uploadImage(fileName: String): PresignUploadResponse {
+    /**
+     * Generates a pre-signed URL for uploading a space image.
+     *
+     * @param fileName The name of the file to be uploaded.
+     * @return A [PresignUploadResponse] containing the pre-signed URL and the file key.
+     */
+    fun getPresignedUrlForImage(fileName: String): PresignUploadResponse {
         return s3PresignService.createUploadUrl(fileName)
     }
 

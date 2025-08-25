@@ -46,8 +46,13 @@ class Space3DModelController(
         ]
     )
     @PostMapping
-    fun uploadModel(@Parameter(description = "업로드할 모델 파일 이름", required = true) @RequestParam("modelName") modelName: String): ResponseEntity<PresignUploadResponse> {
-        val response = modelService.uploadModel(modelName)
+    fun getPresignedUrlForModel(
+        @Parameter(
+            description = "업로드할 모델 파일 이름",
+            required = true
+        ) @RequestParam("modelName") modelName: String
+    ): ResponseEntity<PresignUploadResponse> {
+        val response = modelService.getPresignedUrlForModel(modelName)
         return ResponseEntity.ok(response)
     }
 }

@@ -43,8 +43,13 @@ class SpaceImageController(
         ]
     )
     @PostMapping
-    fun uploadImage(@Parameter(description = "업로드할 이미지 파일 이름", required = true) @RequestParam("imageName") imageName: String): ResponseEntity<PresignUploadResponse> {
-        val response = spaceImageService.uploadImage(imageName)
+    fun getPresignedUrlForModel(
+        @Parameter(
+            description = "업로드할 이미지 파일 이름",
+            required = true
+        ) @RequestParam("imageName") imageName: String
+    ): ResponseEntity<PresignUploadResponse> {
+        val response = spaceImageService.getPresignedUrlForImage(imageName)
         return ResponseEntity.ok(response)
     }
 
@@ -60,7 +65,12 @@ class SpaceImageController(
         ]
     )
     @DeleteMapping
-    fun deleteImage(@Parameter(description = "S3에 업로드된 이미지의 key", required = true) @RequestParam("imageKey") imageKey: String): ResponseEntity<Void> {
+    fun deleteImage(
+        @Parameter(
+            description = "S3에 업로드된 이미지의 key",
+            required = true
+        ) @RequestParam("imageKey") imageKey: String
+    ): ResponseEntity<Void> {
         spaceImageService.deleteImage(imageKey)
         return ResponseEntity.noContent().build()
     }
