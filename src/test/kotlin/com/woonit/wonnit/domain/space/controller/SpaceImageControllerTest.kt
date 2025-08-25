@@ -66,7 +66,6 @@ class SpaceImageControllerTest : BaseControllerTest() {
             val result = mvcTester.delete().uri("/api/v1/images")
                 .param("imageKey", imageKey)
                 .exchange()
-            result
 
             assertThat(result).hasStatus(HttpStatus.NO_CONTENT)
             verify(spaceImageService).deleteImage(imageKey)
