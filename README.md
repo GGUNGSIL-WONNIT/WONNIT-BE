@@ -174,7 +174,7 @@ Embeddables
 
 ## 📚 API Documentation
 - Swagger UI: complete API specification, request/response examples, and field descriptions
-→ Open Swagger UI
+- Open this link -> [http://43.201.251.218:8080/swagger-ui/index.html](http://43.201.251.218:8080/swagger-ui/index.html)
 
 <br>
 
