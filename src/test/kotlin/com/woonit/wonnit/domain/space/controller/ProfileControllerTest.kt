@@ -31,7 +31,9 @@ class ProfileControllerTest : BaseControllerTest() {
 
         val response: MySpacePageResponse = objectMapper.readValue(result.response.contentAsString)
 
-        assertThat(response.spaces).hasSize(5)
+        val spaces = response.spaces
+        assertThat(spaces).hasSize(5)
+        assertThat(spaces[0].name).isEqualTo("space5")
         assertThat(response.totalCount).isEqualTo(15)
     }
 

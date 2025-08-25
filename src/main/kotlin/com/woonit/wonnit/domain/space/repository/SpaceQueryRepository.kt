@@ -19,7 +19,8 @@ class SpaceQueryRepository(
             .createQuery(
                 "SELECT s FROM User u " +
                         "JOIN u.registeredSpaces s " +
-                        "WHERE u.id = :userId",
+                        "WHERE u.id = :userId " +
+                        "ORDER BY s.id DESC",
                 Space::class.java
             )
             .setParameter("userId", UUID.fromString(userId))
@@ -106,7 +107,8 @@ class SpaceQueryRepository(
             .createQuery(
                 "SELECT s FROM Space s " +
                         "JOIN s.renter r " +
-                        "WHERE r.id = :userId AND (s.spaceStatus = :occupied OR s.spaceStatus = :return_request)",
+                        "WHERE r.id = :userId AND (s.spaceStatus = :occupied OR s.spaceStatus = :return_request) " +
+                        "ORDER BY s.id DESC",
                 Space::class.java
             )
             .setParameter("userId", UUID.fromString(userId))
