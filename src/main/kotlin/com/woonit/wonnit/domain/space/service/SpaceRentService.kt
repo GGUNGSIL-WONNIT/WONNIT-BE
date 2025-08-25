@@ -56,9 +56,7 @@ class SpaceRentService(
      */
     fun returnReject(ownerId: String, spaceId: String) {
         val space = getSpace(spaceId)
-        if (space.user.id.toString() != ownerId) {
-            throw ForbiddenException(SpaceErrorCode.NO_OWNER)
-        }
+        checkIsOwner(space.user.id, ownerId)
         space.returnReject()
     }
 
@@ -72,9 +70,7 @@ class SpaceRentService(
      */
     fun returnApprove(ownerId: String, spaceId: String) {
         val space = getSpace(spaceId)
-        if (space.user.id.toString() != ownerId) {
-            throw ForbiddenException(SpaceErrorCode.NO_OWNER)
-        }
+        checkIsOwner(space.user.id, ownerId)
         space.returnApprove()
     }
 
@@ -88,10 +84,14 @@ class SpaceRentService(
      */
     fun reRegistration(ownerId: String, spaceId: String) {
         val space = getSpace(spaceId)
-        if (space.user.id.toString() != ownerId) {
+        checkIsOwner(space.user.id, ownerId)
+        space.reRegistration()
+    }
+
+    private fun checkIsOwner(userId: UUID, ownerId: String) {
+        if (userId.toString() != ownerId) {
             throw ForbiddenException(SpaceErrorCode.NO_OWNER)
         }
-        space.reRegistration()
     }
 
     private fun getUser(userId: String): User = (userRepository.findByIdOrNull(UUID.fromString(userId))
