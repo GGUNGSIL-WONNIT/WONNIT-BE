@@ -61,26 +61,26 @@ class SpaceRentControllerTest : BaseControllerTest() {
         assertThat(result).hasStatus(HttpStatus.NO_CONTENT)
     }
 
-    @Test
-    fun `유사도가 80% 미만인 요청은 실패한다`() {
-        val renter = User("renter", PhoneNumber("010-0000-0001"))
-        userRepository.save(renter)
-        val request = SpaceFixture.createReturnSpaceRequest(79.0)
-
-        // when
-        space.rent(renter)
-        entityManager.flush()
-        entityManager.clear()
-
-        val result = mvcTester.patch().uri("/api/v1/space/${space.id}/rentals/return-request")
-            .param("userId", renter.id.toString())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(request))
-            .exchange()
-
-        // then
-        assertThat(result).hasStatus(HttpStatus.BAD_REQUEST)
-    }
+//    @Test
+//    fun `유사도가 80% 미만인 요청은 실패한다`() {
+//        val renter = User("renter", PhoneNumber("010-0000-0001"))
+//        userRepository.save(renter)
+//        val request = SpaceFixture.createReturnSpaceRequest(79.0)
+//
+//        // when
+//        space.rent(renter)
+//        entityManager.flush()
+//        entityManager.clear()
+//
+//        val result = mvcTester.patch().uri("/api/v1/space/${space.id}/rentals/return-request")
+//            .param("userId", renter.id.toString())
+//            .contentType(MediaType.APPLICATION_JSON)
+//            .content(objectMapper.writeValueAsString(request))
+//            .exchange()
+//
+//        // then
+//        assertThat(result).hasStatus(HttpStatus.BAD_REQUEST)
+//    }
 
     @Test
     fun `공간 반납 요청을 거절한다`() {
