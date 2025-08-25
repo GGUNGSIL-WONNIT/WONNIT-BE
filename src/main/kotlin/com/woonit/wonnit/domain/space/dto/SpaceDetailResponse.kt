@@ -10,7 +10,7 @@ import com.woonit.wonnit.domain.space.SpaceStatus
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
-import java.util.UUID
+import java.util.*
 
 data class SpaceDetailResponse(
     @Schema(description = "공간 ID", example = "028195e0-6999-137d-a747-0a02b343a12e")

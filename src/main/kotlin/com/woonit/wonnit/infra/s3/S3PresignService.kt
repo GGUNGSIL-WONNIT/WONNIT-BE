@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component
 import software.amazon.awssdk.services.s3.model.PutObjectRequest
 import software.amazon.awssdk.services.s3.presigner.S3Presigner
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest
-import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.util.*

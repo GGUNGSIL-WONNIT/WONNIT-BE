@@ -3,7 +3,6 @@ package com.woonit.wonnit.domain.space.dto
 import com.woonit.wonnit.domain.share.AddressInfo
 import com.woonit.wonnit.domain.share.AmountInfo
 import com.woonit.wonnit.domain.share.OperationalInfo
-import com.woonit.wonnit.domain.share.PhoneNumber
 import com.woonit.wonnit.domain.space.SpaceCategory
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
@@ -24,10 +23,17 @@ data class SpaceSaveRequest(
     val phoneNumber: String,
 
     @NotBlank
-    @Schema(description = "대표 이미지 URL", example = "https://wonnit.s3.ap-northeast-2.amazonaws.com/main.jpg", required = true)
+    @Schema(
+        description = "대표 이미지 URL",
+        example = "https://wonnit.s3.ap-northeast-2.amazonaws.com/main.jpg",
+        required = true
+    )
     val mainImgUrl: String,
 
-    @Schema(description = "서브 이미지 URL 목록", example = "[\"https://wonnit.s3.ap-northeast-2.amazonaws.com/sub1.jpg\", \"https://wonnit.s3.ap-northeast-2.amazonaws.com/sub2.jpg\"]")
+    @Schema(
+        description = "서브 이미지 URL 목록",
+        example = "[\"https://wonnit.s3.ap-northeast-2.amazonaws.com/sub1.jpg\", \"https://wonnit.s3.ap-northeast-2.amazonaws.com/sub2.jpg\"]"
+    )
     val subImgUrls: MutableList<String>,
 
     @NotNull

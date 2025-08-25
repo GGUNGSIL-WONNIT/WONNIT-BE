@@ -10,7 +10,6 @@ import org.mockito.BDDMockito.given
 import org.mockito.Mockito.verify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
@@ -39,7 +38,8 @@ class SpaceImageControllerTest {
         fun getPresignedUrlForImage_returnsPresignedUrlResponse() {
             // given
             val imageName = "test-image.jpg"
-            val presignedUrl = "https://s3.ap-northeast-2.amazonaws.com/wonnit-bucket/images/some-uuid-test-image.jpg?presigned-signature"
+            val presignedUrl =
+                "https://s3.ap-northeast-2.amazonaws.com/wonnit-bucket/images/some-uuid-test-image.jpg?presigned-signature"
             val key = "images/some-uuid-test-image.jpg"
             val mockResponse = PresignUploadResponse(presignedUrl, key)
 

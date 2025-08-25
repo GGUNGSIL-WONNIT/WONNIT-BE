@@ -5,6 +5,7 @@ import com.woonit.wonnit.domain.share.AmountInfo
 import com.woonit.wonnit.domain.share.OperationalInfo
 import com.woonit.wonnit.domain.share.PhoneNumber
 import com.woonit.wonnit.domain.space.dto.ReturnSpaceRequest
+import com.woonit.wonnit.domain.space.dto.SpaceSaveRequest
 import com.woonit.wonnit.domain.user.User
 import com.woonit.wonnit.global.entity.BaseEntity
 import jakarta.persistence.*
@@ -128,36 +129,21 @@ class Space(
     }
 
     companion object {
-        fun register(
-            category: SpaceCategory,
-            name: String,
-            mainImgUrl: String,
-            subImgUrls: MutableList<String>,
-            addressInfo: AddressInfo,
-            amountInfo: AmountInfo,
-            size: Double,
-            operationalInfo: OperationalInfo,
-            spaceModelUrl: String?,
-            modelThumbnailUrl: String?,
-            user: User,
-            phoneNumber: PhoneNumber,
-            precautions: String?,
-            tags: MutableList<String> = mutableListOf(),
-        ) = Space(
-            spaceCategory = category,
-            name = name,
-            mainImgUrl = mainImgUrl,
-            subImgUrls = subImgUrls,
-            addressInfo = addressInfo,
-            amountInfo = amountInfo,
-            size = size,
-            operationalInfo = operationalInfo,
-            spaceModelUrl = spaceModelUrl,
-            modelThumbnailUrl = modelThumbnailUrl,
+        fun register(request: SpaceSaveRequest, user: User) = Space(
+            name = request.name,
+            spaceCategory = request.category,
+            mainImgUrl = request.mainImgUrl,
+            subImgUrls = request.subImgUrls,
+            addressInfo = request.address,
+            amountInfo = request.amountInfo,
+            operationalInfo = request.operationInfo,
+            size = request.size,
+            spaceModelUrl = request.spaceModelUrl,
+            modelThumbnailUrl = request.modelThumbnailUrl,
+            precautions = request.precautions,
             user = user,
-            phoneNumber = phoneNumber,
-            precautions = precautions,
-            tags = tags,
+            phoneNumber = PhoneNumber(request.phoneNumber),
+            tags = request.tags,
             beforeImgUrl = null,
             afterImgUrl = null,
             resultImgUrl = null,
@@ -165,34 +151,20 @@ class Space(
         )
     }
 
-    public fun update(
-        category: SpaceCategory,
-        name: String,
-        mainImgUrl: String,
-        subImgUrls: MutableList<String>,
-        addressInfo: AddressInfo,
-        amountInfo: AmountInfo,
-        size: Double,
-        operationalInfo: OperationalInfo,
-        spaceModelUrl: String?,
-        modelThumbnailUrl: String?,
-        phoneNumber: PhoneNumber,
-        precautions: String?,
-        tags: MutableList<String> = mutableListOf(),
-    ) {
-        this.spaceCategory = category
-        this.name = name
-        this.mainImgUrl = mainImgUrl
-        this.subImgUrls = subImgUrls
-        this.addressInfo = addressInfo
-        this.amountInfo = amountInfo
-        this.size = size
-        this.operationalInfo = operationalInfo
-        this.spaceModelUrl = spaceModelUrl
-        this.modelThumbnailUrl = modelThumbnailUrl
-        this.phoneNumber = phoneNumber
-        this.precautions = precautions
-        this.tags = tags
+    fun update(request: SpaceSaveRequest) {
+        this.spaceCategory = request.category
+        this.name = request.name
+        this.mainImgUrl = request.mainImgUrl
+        this.subImgUrls = request.subImgUrls
+        this.addressInfo = request.address
+        this.amountInfo = request.amountInfo
+        this.size = request.size
+        this.operationalInfo = request.operationInfo
+        this.spaceModelUrl = request.spaceModelUrl
+        this.modelThumbnailUrl = request.modelThumbnailUrl
+        this.phoneNumber = PhoneNumber(request.phoneNumber)
+        this.precautions = request.precautions
+        this.tags = request.tags
     }
 
     fun rent(renter: User) {

@@ -1,9 +1,6 @@
 package com.woonit.wonnit.domain.share
 
-import org.assertj.core.api.AssertionsForInterfaceTypes.assertThat
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 @DisplayName("PhoneNumber 테스트")
 class PhoneNumberTest {

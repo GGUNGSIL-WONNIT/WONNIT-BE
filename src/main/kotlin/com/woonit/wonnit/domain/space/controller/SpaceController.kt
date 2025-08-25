@@ -2,8 +2,8 @@ package com.woonit.wonnit.domain.space.controller
 
 import com.woonit.wonnit.domain.space.dto.SpaceDetailResponse
 import com.woonit.wonnit.domain.space.dto.SpaceSaveRequest
+import com.woonit.wonnit.domain.space.service.SpaceCommandService
 import com.woonit.wonnit.domain.space.service.SpaceQueryService
-import com.woonit.wonnit.domain.space.service.SpaceUpdateService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
@@ -22,8 +22,8 @@ import java.util.*
 @RestController
 @RequestMapping("/api/v1/spaces")
 class SpaceController(
-    val spaceUpdateService: SpaceUpdateService,
-    private val spaceQueryService: SpaceQueryService
+    val spaceCommandService: SpaceCommandService,
+    val spaceQueryService: SpaceQueryService
 ) {
 
     @Operation(summary = "새로운 공간 등록", description = "새로운 공간을 등록합니다.")
@@ -59,12 +59,13 @@ class SpaceController(
             ),
         ]
     )
+
     @PostMapping
     fun createSpace(
         @Parameter(description = "등록할 공간의 정보", required = true) @Valid @RequestBody spaceSaveRequest: SpaceSaveRequest,
         @Parameter(description = "유저 ID", required = true) @RequestParam userId: String
     ): ResponseEntity<Void> {
-        spaceUpdateService.createSpace(spaceSaveRequest, userId)
+        spaceCommandService.createSpace(spaceSaveRequest, userId)
         return ResponseEntity.status(HttpStatus.CREATED).build()
     }
 
@@ -115,7 +116,7 @@ class SpaceController(
         @Parameter(description = "유저 ID", required = true) @RequestParam userId: String,
         @Parameter(description = "수정할 공간의 정보", required = true) @Valid @RequestBody spaceSaveRequest: SpaceSaveRequest
     ): ResponseEntity<Void> {
-        spaceUpdateService.updateSpace(spaceId, spaceSaveRequest, userId)
+        spaceCommandService.updateSpace(spaceId, spaceSaveRequest, userId)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
 
@@ -157,7 +158,7 @@ class SpaceController(
         @Parameter(description = "삭제할 공간들의 ID 목록", required = true) @RequestParam spaceIds: List<String>,
         @Parameter(description = "유저 ID", required = true) @RequestParam userId: String
     ): ResponseEntity<Void> {
-        spaceUpdateService.deleteSpaces(spaceIds, userId)
+        spaceCommandService.deleteSpaces(spaceIds, userId)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
 
@@ -183,7 +184,12 @@ class SpaceController(
         ]
     )
     @GetMapping("/{spaceId}")
-    fun getSpaceDetail(@Parameter(description = "조회할 공간의 ID", required = true) @PathVariable spaceId: UUID): ResponseEntity<SpaceDetailResponse> {
+    fun getSpaceDetail(
+        @Parameter(
+            description = "조회할 공간의 ID",
+            required = true
+        ) @PathVariable spaceId: UUID
+    ): ResponseEntity<SpaceDetailResponse> {
         val response = spaceQueryService.getSpaceDetail(spaceId)
         return ResponseEntity.ok(response)
     }

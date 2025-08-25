@@ -2,6 +2,7 @@ package com.woonit.wonnit.domain.space
 
 import com.woonit.wonnit.domain.share.*
 import com.woonit.wonnit.domain.space.dto.ReturnSpaceRequest
+import com.woonit.wonnit.domain.space.dto.SpaceSaveRequest
 import com.woonit.wonnit.domain.user.User
 import java.time.DayOfWeek
 import java.time.LocalDateTime
@@ -12,6 +13,10 @@ object SpaceFixture {
         val user = User("user", PhoneNumber("010-0000-0000"))
 
         return user
+    }
+
+    fun createSpace(owner: User): Space {
+        return Space.register(createSpaceRequest(), owner)
     }
 
     fun createSpace(
@@ -55,6 +60,30 @@ object SpaceFixture {
             similarity = null
         )
     }
+
+    fun createSpaceRequest(
+        name: String = "테스트 공간",
+        category: SpaceCategory = SpaceCategory.DANCE_STUDIO,
+        mainImg: String = "https://img/main.jpg"
+    ) = SpaceSaveRequest(
+        category = category,
+        name = name,
+        phoneNumber = "010-0000-0000",
+        mainImgUrl = mainImg,
+        subImgUrls = mutableListOf("https://img/1.jpg", "https://img/2.jpg"),
+        address = AddressInfo("서울시 OO구", null, 37.5, 127.0),
+        amountInfo = AmountInfo(TimeUnit.PER_DAY, amount = 100000),
+        size = 45.0,
+        operationInfo = OperationalInfo(
+            listOf(DayOfWeek.MONDAY, DayOfWeek.SUNDAY),
+            LocalDateTime.MIN,
+            LocalDateTime.MAX
+        ),
+        spaceModelUrl = "https://model.glb",
+        modelThumbnailUrl = "https://model-thumb.jpg",
+        precautions = "조심히 사용",
+        tags = mutableListOf("태그1", "태그2")
+    )
 
     fun createReturnSpaceRequest(similarity: Double = 80.0): ReturnSpaceRequest {
         return ReturnSpaceRequest(

@@ -1,6 +1,5 @@
 package com.woonit.wonnit.domain.space.service
 
-import com.woonit.wonnit.domain.share.PhoneNumber
 import com.woonit.wonnit.domain.space.Space
 import com.woonit.wonnit.domain.space.dto.SpaceSaveRequest
 import com.woonit.wonnit.domain.space.repository.SpaceRepository
@@ -16,7 +15,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class SpaceUpdateService(
+class SpaceCommandService(
     private val spaceRepository: SpaceRepository,
     private val userRepository: UserRepository,
 ) {
@@ -33,22 +32,7 @@ class SpaceUpdateService(
         val user = userRepository.findByIdOrNull(UUID.fromString(userId))
             ?: throw NotFoundException(UserErrorCode.NOT_FOUND)
 
-        val space = Space.register(
-            name = request.name,
-            category = request.category,
-            mainImgUrl = request.mainImgUrl,
-            subImgUrls = request.subImgUrls,
-            addressInfo = request.address,
-            amountInfo = request.amountInfo,
-            operationalInfo = request.operationInfo,
-            size = request.size,
-            spaceModelUrl = request.spaceModelUrl,
-            modelThumbnailUrl = request.modelThumbnailUrl,
-            precautions = request.precautions,
-            user = user,
-            phoneNumber = PhoneNumber(request.phoneNumber),
-            tags = request.tags,
-        )
+        val space = Space.register(request, user)
 
         spaceRepository.save(space)
     }
@@ -64,28 +48,11 @@ class SpaceUpdateService(
      */
     @Transactional
     fun updateSpace(spaceId: String, request: SpaceSaveRequest, userId: String) {
-        val space = spaceRepository.findByIdOrNull(UUID.fromString(spaceId))
-            ?: throw NotFoundException(SpaceErrorCode.NOT_FOUND)
+        val space = getSpace(spaceId)
 
-        if (space.user.id != UUID.fromString(userId)) {
-            throw ForbiddenException(CommonErrorCode.ACCESS_DENIED, "spaceId=$spaceId, userId=$userId")
-        }
+        checkIsOwner(space.user.id, userId, spaceId)
 
-        space.update(
-            category = request.category,
-            name = request.name,
-            mainImgUrl = request.mainImgUrl,
-            subImgUrls = request.subImgUrls,
-            addressInfo = request.address,
-            amountInfo = request.amountInfo,
-            size = request.size,
-            operationalInfo = request.operationInfo,
-            spaceModelUrl = request.spaceModelUrl,
-            modelThumbnailUrl = request.modelThumbnailUrl,
-            phoneNumber = PhoneNumber(request.phoneNumber),
-            precautions = request.precautions,
-            tags = request.tags,
-        )
+        space.update(request)
     }
 
     /**
@@ -99,14 +66,23 @@ class SpaceUpdateService(
     @Transactional
     fun deleteSpaces(spaceIds: List<String>, userId: String) {
         spaceIds.forEach { spaceId ->
-            val space = spaceRepository.findByIdOrNull(UUID.fromString(spaceId))
-                ?: throw NotFoundException(SpaceErrorCode.NOT_FOUND)
+            val space = getSpace(spaceId)
 
-            if (space.user.id.toString() != userId) {
-                throw ForbiddenException(CommonErrorCode.ACCESS_DENIED, "spaceId=$spaceId, userId=$userId")
-            }
+            checkIsOwner(space.user.id, userId, spaceId)
 
             spaceRepository.delete(space)
+        }
+    }
+
+    private fun getSpace(spaceId: String): Space {
+        val space = spaceRepository.findByIdOrNull(UUID.fromString(spaceId))
+            ?: throw NotFoundException(SpaceErrorCode.NOT_FOUND)
+        return space
+    }
+
+    private fun checkIsOwner(ownerId: UUID, userId: String, spaceId: String) {
+        if (ownerId.toString() != userId) {
+            throw ForbiddenException(CommonErrorCode.ACCESS_DENIED, "spaceId=$spaceId, userId=$userId")
         }
     }
 }
