@@ -10,7 +10,7 @@ Spring Boot + Kotlin based backend
 [![AWS S3](https://img.shields.io/badge/AWS%20S3-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white)](https://aws.amazon.com/s3/)
 
 
-![워닛. 유휴시간을 공간 공유로 채우는 지역 상권 활성화 서비스. 표지.](https://github.com/user-attachments/assets/ddd38ce7-71a6-407c-947f-6fa9508c4ac1)
+![표지](https://github.com/user-attachments/assets/f8ba1689-3eb6-433d-b94d-875f29ad5cb8)
 
 ---
 
